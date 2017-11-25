@@ -9,26 +9,43 @@
 	<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.css" rel="stylesheet">
 	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://cdn.bootcss.com/simditor/2.3.6/styles/simditor.css" rel="stylesheet">
-	<link href="__STATIC__/Home/css/base.css" rel="stylesheet">
+	<!-- <link href="__STATIC__/Home/css/base.css" rel="stylesheet"> -->
+	<link href="__STATIC__/Home/css/root.css" rel="stylesheet">
 </head>
 <body>
 	<header>
 		<nav>
-			<a class="navbar-brand" href="#">Navbar</a>
-			<ul>
-				<li>
-					<a href="#">Home <span class="sr-only">(current)</span></a>
-				</li>
-				<li>
-					<a href="#">Disabled</a>
-				</li>
-			</ul>
-			<form action="{:url('Index/search')}">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-					<i class="fa fa-search"></i>
-				</button>
-				<input class="" type="text" placeholder="Search" aria-label="Search">
-			</form>
+			<div class="nav-left-wrap">
+				<a class="navbar-brand" href="{:url('Index/index')}">Navbar</a>
+				<form action="{:url('Index/search')}">
+					<button class="search-btn" type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+					<input class="" type="text" placeholder="Search Box" aria-label="Search">
+				</form>
+			</div>
+			<div class="nav-right-wrap">
+				<ul class="nav-links">
+					<li class="nav-link">
+						<a href="{:url('Index/index')}">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-link">
+						<a href="#">项目1</a>
+					</li>
+					<li class="nav-link">
+						<a href="#">项目2</a>
+					</li>
+					<li class="nav-link">
+						<a href="#">项目3...</a>
+					</li>
+					<li class="nav-link">
+						<a href="#">用户自定义🔗</a>
+					</li>
+					<li class="nav-link">
+						<a href="#">用户自定义🔗</a>
+					</li>
+				</ul>
+			</div>
 		</nav>
 	</header>
 	<main role="main"></main>
