@@ -17,7 +17,7 @@
 		<nav>
 			<div class="nav-left-wrap">
 				<a class="navbar-brand" href="{:url('Index/index')}">Navbar</a>
-				<form action="{:url('Index/search')}">
+				<form action="{:url('Index/search')}" class="search-form">
 					<button class="search-btn" type="submit">
 						<i class="fa fa-search"></i>
 					</button>
@@ -27,7 +27,7 @@
 			<div class="nav-right-wrap">
 				<ul class="nav-links">
 					<li class="nav-link">
-						<a href="{:url('Index/index')}">Home <span class="sr-only">(current)</span></a>
+						<a href="{:url('Index/index')}" class="active">Home<span class="sr-only?"></span></a>
 					</li>
 					<li class="nav-link">
 						<a href="#">项目1</a>
@@ -38,12 +38,17 @@
 					<li class="nav-link">
 						<a href="#">项目3...</a>
 					</li>
+				</ul>
+				<ul class="user-space">
 					<li class="nav-link">
-						<a href="#">用户自定义🔗</a>
+						<a href="#">自定义🔗</a>
 					</li>
 					<li class="nav-link">
-						<a href="#">用户自定义🔗</a>
+						<a href="#">自定义🔗</a>
 					</li>
+					<li class="nav-link"><a href="#" class="dropdown-toggle lt" data-toggle="dropdown"><i class="fa fa-bell-o"></i><span class="msg-num">3</span></a></li>
+					<li class="nav-link">Ummer</li>
+					<li class="nav-link">头像</li>
 				</ul>
 			</div>
 		</nav>
