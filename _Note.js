@@ -11,22 +11,23 @@
 所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
 
 6个属性设置在容器上。
-	flex-direction 内部项目排列方向
-	flex-wrap			内部项目是否换行
-	flex-flow			以上两项综合
-	justify-content		内部项目水平对齐方式
-	align-items				内部项目竖向对齐方式
-	align-content			内部内容竖向对齐方式
+	flex-direction 内部项目排列方向  row | row-reverse | column | column-reverse;
+	flex-wrap			内部项目是否换行   nowrap | wrap | wrap-reverse;
+	flex-flow			以上两项综合	      <‘flex-direction’> || <‘flex-wrap’>;
+	justify-content		内部项目水平对齐方式    flex-start | flex-end | center | space-between | space-around; 如水平居中
+	align-items				内部项目竖向对齐方式    flex-start | flex-end | center | baseline | stretch; 如垂直居中
+	align-content			flex-start | flex-end | center | space-between | space-around | stretch;
+	'当我们把容器的flex-warp的值设置为warp或者warp-reverse时，若项目不能在一根主轴上显示，容器便会出现多根主轴。此时便需要一个值来定义多根平行轴线的对齐方式，这个值便是align-content。'
 
 6个属性设置在项目上
-	order					项目本身的排序
+	order					项目本身的排序  默认值为0。
 	flex-grow			项目自身的放大
 	flex-shrink		项目自身的缩小
 	flex-basis		项目自身在父元素主轴还有剩余空间时，定义自身所占的空间。
-	flex
+	flex          none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
 	align-self		项目自身采取不一样的对齐方式
 
-
+'flex布局踩过的那些坑 https://segmentfault.com/a/1190000006559564'
 
 关于 less
 	1 建立的一文件夹，如less、source，在其内部创立一个less文件
