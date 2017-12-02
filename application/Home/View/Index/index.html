@@ -27,16 +27,16 @@
 			<div class="nav-right-wrap">
 				<ul class="nav-links">
 					<li class="nav-link">
-						<a href="{:url('Index/index')}" class="active">Home<span class="sr-only?"></span></a>
+						<a href="{:url('Index/index')}" class="active"><i class="fa fa-home"></i>Home<span class="sr-only?"></span></a>
 					</li>
 					<li class="nav-link">
-						<a href="#">最新资讯</a>
+						<a href="#"><i class="fa fa-newspaper-o"></i>最新资讯</a>
 					</li>
 					<li class="nav-link">
-						<a href="#">项目2</a>
+						<a href="#"><i class="fa fa-group"></i></a>
 					</li>
 					<li class="nav-link">
-						<a href="#">项目3...</a>
+						<a href="#">项目...</a>
 					</li>
 				</ul>
 				<ul class="user-space">
@@ -60,11 +60,94 @@
 		<div class="banner">banner</div>
 		<div class="container">
 			<div class="city_nav">
-				<ul class="zone first_class_zone">第一级地区</ul>
-				<ul class="zone second_class_zone">第二级地区</ul>
-				<ul class="zone third_class_zone">第三级地区</ul>
+				<ul class="zone first_class_zone">
+					<li>全国</li>
+					<li>北京</li>
+					<li>上海</li>
+					<li>天津</li>
+					<li>重庆</li> 
+					<li>广东</li>
+					<li class="checked">山东</li>
+					<li>江苏</li>
+					<li>河南</li>
+					<li>上海</li>
+					<li>河北</li>
+					<li>浙江</li>
+					<li>香港特别行政区</li>
+					<li>陕西</li>
+					<li>湖南</li>
+					<li>重庆</li>
+					<li>福建</li>
+					<li>天津</li>
+					<li>云南</li>
+					<li>四川</li>
+					<li>广西壮族自治区</li>
+					<li>安徽</li>
+					<li>海南</li>
+					<li>江西</li>
+					<li>宁夏回族自治区</li>
+					<li>贵州</li>
+					<li>澳门特别行政区</li>
+					<li>甘肃</li>
+					<li>青海</li>
+					<li>新疆维吾尔自治区</li>
+					<li>湖北</li>
+					<li>山西</li>
+					<li>吉林</li>
+					<li>辽宁</li>
+					<li>台湾</li>
+					<li>黑龙江</li>
+					<li>内蒙古自治区</li>
+					<li>西藏区</li>
+				</ul>
+				<ul class="zone second_class_zone">
+					<li>全省</li>
+					<li>济南</li>
+					<li>泰安</li>
+					<li>潍坊</li>
+					<li>德州</li>
+					<li>滨州</li>
+					<li>莱芜</li>
+					<li class="checked">青岛</li>
+					<li>烟台</li>
+					<li>日照</li>
+					<li>东营</li>
+					<li>济宁</li>
+					<li>荷泽</li>
+					<li>聊城</li>
+					<li>临沂</li>
+					<li>枣庄</li>
+					<li>淄博</li>
+					<li>威海</li>
+				</ul>
+				<ul class="zone third_class_zone">
+					<li class="checked">全市</li>
+					<li class="checked">市南</li>
+					<li class="checked">市北</li>
+					<li class="checked">四方</li>
+					<li class="checked">黄岛</li>
+					<li class="checked">崂山</li>
+					<li class="checked">李沧</li>
+					<li class="checked">城阳</li>
+					<li class="checked">胶州</li>
+					<li class="checked">即墨</li>
+					<li class="checked">平度</li>
+					<li class="checked">胶南</li>
+					<li class="checked">莱西</li>
+				</ul>
+				<ul class="zone sort">
+					<li class="checked"><i class="fa fa-tree"></i>最新</li>
+					<li><i class="fa fa-smile-o"></i>最热</li>
+					<li><i class="fa fa-heartbeat"></i>最心塞</li>
+					<li><i class="fa fa-random"></i>随机</li>
+					<li><i class="fa fa-trophy"></i>区长推荐</li>
+					<li><i class="fa fa-key fa-spin"></i>密码</li>
+				</ul>
 			</div>
-			<div class="photo">photo</div>
+			<div class="photo">
+				<div id="imgs-box">
+				</div>
+			</div>
 			<div class="article">article</div>
 			<div class="people">people</div>
 		</div>
@@ -85,13 +168,17 @@
 		</div>
 		<div class="footer_center_rwap">center</div>
 		<div class="footer_right_rwap">right</div>
-
 	</footer>
+	<div class="progress" id="progress-bar">
+		<div class="progress-bar progress-bar-light progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="6" aria-valuemax="100" style="width: 0%">0%
+		</div>
+	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 	<script src="https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.js"></script>
 	<!-- <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.js"></script> -->
 	<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 	<script src="https://cdn.bootcss.com/Sortable/1.6.0/Sortable.js"></script>
+	<script src="__STATIC__/Home/js/jQuery.myGreatWall.js"></script>
 	<script src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.js" attr-explain="简单的进度条"></script>
 </body>
 </html>
