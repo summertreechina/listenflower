@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="app">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>花语 | 登陆账号</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+	<link href="http://cdn.bootcss.com/animate.css/3.5.2/animate.css" rel="stylesheet">
+	<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- <link href="signin.css" rel="stylesheet"> -->
+	<style>
+		.app {
+			height: 100%;
+			overflow: hidden;
+			font-weight: 300;
+		}
+
+
+		body {
+			background: url(http://mtl.ttsqgs.com/images/img/10715/29.jpg);
+			background-size: 100%;
+			background-position: top left;
+			-webkit-animation: sexy 240s infinite linear;
+		}
+		@-webkit-keyframes sexy {
+		    0% { background-position: 0 0; }
+		    50% { background-position: bottom right; }
+		    100% { background-position: left top; }
+		}
+
+		#siginBox {
+			width: 440px;
+			padding: 23px;
+			padding-bottom: 90px;
+			background-color: #fff;
+			margin: 0 auto;
+		}
+		#siginBox .sigin-header {
+			margin-bottom: 20px;
+			padding: 20px 0;
+		}
+		#siginBox .title {
+			font-size: 20px;
+			font-family: "SimHei";
+			font-weight: 300;
+		}
+		#siginBox .sigin-header a {
+			text-decoration: underline;
+			color: #333;
+		}
+		#siginBox input {
+			border-radius: 0;
+			border: none;
+			border-bottom: 1px solid #e0e0e0;
+			outline: #fff none;
+			box-shadow: inset 0 0 0 rgba(0, 0, 0, 1);
+			-webkit-appearance: textfield;
+		}
+		#siginBox input:focus {
+			border-bottom: 1px solid #c96;
+			outline: 0;
+		}
+		#siginBox button {
+			border-radius: 0;
+			margin-top: 30px;
+		}
+		#siginBox .checkbox {
+			margin-top: 30px;
+		}
+		#siginBox .checkbox label {
+			font-weight: 200;
+		}
+		#siginBox .forget {
+			margin: 0px 0px 0px 0px;
+		}
+		#siginBox .close-btn {
+			text-decoration: none;
+			position: absolute;
+			margin: -50px 430px;
+			color: #fff;
+			font-size: 3.5em;
+			font-weight: 200;
+			transform: rotate(45deg);
+		}
+		#siginBox .error {
+			font-weight: 300;
+			color: #96f;
+		}
+		#siginBox #validateImg {
+			display: block;
+			width: 140px;
+			position: absolute;
+			margin-left: 250px;
+		}
+		#footer {
+			margin-top: 30px;
+			font-family: SimHei;
+			font-weight: 300;
+			font-size: 16px;
+			text-align: center;
+			color: #585858;
+		}
+
+
+
+		.fr {
+			float: right;
+		}
+
+		// app.css
+		.i-checks input {
+		  opacity: 0;
+		}
+		.i-checks input:checked + i {
+		  border-color: #545ca6;
+		}
+		.i-checks input:checked + i:before {
+		  position: absolute;
+		  left: 0px;
+		  width: 100%;
+		  top: 2px;
+		  text-align: center;
+		  font-family: "FontAwesome";
+		  font-style: normal;
+		  font-weight: normal;
+		  color: #545ca6;
+		}
+		.i-checks input[type="radio"] + i {
+		  border-radius: 100%;
+		}
+		.i-checks input[type="checkbox"]:checked + i:before {
+		  content: "\f00c";
+		}
+		.i-checks input[type="radio"]:checked + i:before {
+		  content: "\f111";
+		}
+		.i-checks input[disabled] + i,
+		fieldset[disabled] .i-checks input + i {
+		  border-color: #dbe2e7;
+		}
+		.i-checks input[disabled] + i:before,
+		fieldset[disabled] .i-checks input + i:before {
+		  color: #cbd5dd;
+		}
+		.i-checks i {
+		  width: 18px;
+		  height: 18px;
+		  line-height: 1;
+		  border: 1px solid #cbd5dd;
+		  background-color: #fff;
+		  margin-left: -20px;
+		  margin-top: -2px;
+		  display: inline-block;
+		  vertical-align: middle;
+		  margin-right: 4px;
+		  position: relative;
+		  font-size: 12px;
+		}
+		.line {
+		  *width: 100%;
+		  height: 2px;
+		  margin: 10px 0;
+		  font-size: 0;
+		  overflow: hidden;
+		}
+		.line-dashed {
+		  border-style: dashed !important;
+		  background-color: #999;
+		  border-width: 0;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="siginBox" class="animated slideInUp">
+		<a href="#" class="close-btn">+</a>
+		<div class="sigin-header">
+			<span class="title">登陆花语</span>
+			<span class="fr js-link-effect">还没有账号，<a href="{:url('User/register')}">立即注册</a></span>
+		</div>
+		<form action="index.html" id="siginForm">
+			<div class="form-group">
+				<input type="" id="account" name="account" placeholder="邮箱 or 手机" class="form-control input-lg">
+			</div>
+			<div class="form-group">
+				<input type="password" id="password" name="password" placeholder="密码" class="form-control input-lg">
+			</div>
+			<div class="form-group">
+				<img id="validateImg" src="rsc/validateCode.png" alt="验证码图片">
+				<input type="" id="validate" name="validate" placeholder="验证码" class="form-control input-lg">
+			</div>
+			<div class="checkbox i-checks">
+				<label>
+					<input type="checkbox" checked=""><i></i>记住登陆状态
+				</label>
+			</div>
+			<button type="submit" class="btn btn-lg btn-warning btn-block">马上登陆</button>
+		</form>
+		<div class="forget fr js-link-effect"><a href="#">忘记了密码？</a></div>
+	</div>
+
+	<footer id="footer">
+		<p>
+			<small><a href="{:url('Index/index')}" style="color: #585858">花语图社.青岛<br>&copy; 2017</a></small>
+		</p>
+	</footer>
+	<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.js"></script>
+	<!-- <script src="signin.js"></script> -->
+	<script>
+		+function(){
+			'user strcit';
+			
+			// 控制元素局中
+			makeCenter();
+			// 登陆框关闭按钮功能
+			closeBtn();
+			// 控制元素局中
+			function makeCenter() {
+				let dom = $('#siginBox');
+				let offsetTop = ($(window).height() - dom.height()) / 4;
+
+				dom.css('margin-top', offsetTop + 'px');
+			};
+			// 登陆框关闭按钮功能
+			function closeBtn() {
+				$('#siginBox .close-btn').on('click', function(){
+					$('#siginBox').hide();
+					$('#footer').addClass('animated fadeOut');
+				});
+			};
+			// 登陆页面a-link动画效果控制
+			$('.js-link-effect').on('mouseover', function(e) {
+				e.preventDefault();
+				let linkEl = $(this);
+				linkEl.addClass('animated swing');
+				setTimeout(function(){
+					linkEl.removeClass('animated swing');
+				}, 1500);
+			});
+
+			// 登陆信息验证
+			$('#siginForm').validate({
+				rules : {
+					debug : true,
+					account : {
+						required : true,
+						account  : true
+					},
+					password : {
+						required : true,
+						minlength: 6,
+						maxlength: 16
+					},
+					validate : {
+						required: true,
+						// remote  : "/rsc/demo.json",
+					}
+
+				},
+				messages : {
+					account : {
+						required : '请输入账号',
+					},
+					password : {
+						required : '请输入密码',
+						minlength: '密码至少9位',
+						maxlength: '密码最多16位'
+					},
+					validate : {
+						required: '请输入验证码',
+						remote  : '验证码输入错误',
+					}
+				}
+			});
+			// 自定义的手机号和邮箱同时登陆验证--"account"方法
+			$.validator.addMethod("account", function(value, element, params){
+			    let email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+			    let mobile = /^1[3-9][0-9]{9}$/;
+			    return (mobile.test(value)) || (email.test(value));
+			}, $.validator.format("请检查您输入的「邮箱」或「手机号码」"));
+
+		}();
+	</script>
+</body>
+</html>
+
+
+
+
+
+

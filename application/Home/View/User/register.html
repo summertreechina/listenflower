@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="app">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>花语 | 加入花语</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+	<link href="http://cdn.bootcss.com/animate.css/3.5.2/animate.css" rel="stylesheet">
+	<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- <link href="signup.css" rel="stylesheet"> -->
+	<style>
+		.app {
+			height: 100%;
+			overflow: hidden;
+			font-weight: 300;
+		}
+		body {
+			background: url(http://mtl.ttsqgs.com/images/img/10715/57.jpg);
+			background-size: 100%;
+		}
+		#signupWrap {
+			padding: 40px;
+			background-color: #fff;
+		}
+		#signupWrap>p {
+			vertical-align: text-bottom;
+			font-weight: 500;
+			font-size: 1.4em;
+		}
+		#signupWrap .signinLink {
+			font-size: 14px;
+			font-weight: 300;
+			margin-top: 8px;
+		}
+		#signupWrap .signinLink a {
+			text-decoration: underline;
+			color: #333;
+		}
+		#signupWrap #signupForm {
+
+		}
+		#signupWrap #signupForm input {
+			border-radius: 0;
+			border: none;
+			border-bottom: 1px solid #e0e0e0;
+			outline: #fff none;
+			box-shadow: inset 0 0 0 rgba(0, 0, 0, 1);
+			-webkit-appearance: textfield;
+		}
+		#signupWrap #signupForm #postCode {
+			display: inline-block;
+			width: 160px;
+			padding: 6px 12px;
+			position: absolute;
+			margin-left: 218px;
+			margin-top: 8px;
+			color: #fff;
+		    background-color: #f0ad4e;
+		    border-color: #eea236;
+		    border: 1px solid transparent;
+			border-radius: 0;
+			vertical-align: middle;
+			text-align: center;
+			font-size: 14px;
+			font-weight: normal;
+			white-space: nowrap;
+		}
+		#signupWrap #signupForm input:focus {
+			border-bottom: 1px solid #c96;
+			outline: 0;
+		}
+		#signupWrap #signupForm button {
+			border-radius: 0;
+			margin-top: 30px;
+		}
+		#signupWrap .third-sign {
+			margin: 10px 0;
+			list-style: none;
+		}
+		#signupWrap .third-sign li {
+			width: 41px;
+			height: 41px;
+			margin: 4px;
+			display: inline-block;
+			border-radius: 50%;
+			float: right;
+			cursor: pointer;
+		}
+		#signupWrap .third-sign li:nth-of-type(1) {
+			background: url(__STATIC__/Common/img/login_v6.png) no-repeat 50% 61%;
+			background-size: 308%;
+		}
+		#signupWrap .third-sign li:nth-of-type(2) {
+			background: url(__STATIC__/Common/img/login_v6.png) no-repeat 0% 61%;
+			background-size:308%;
+		}
+		#signupWrap .third-sign li:nth-of-type(3) {
+			background: url(__STATIC__/Common/img/login_v6.png) no-repeat 100% 61%;
+			background-size:308%;
+		}
+		#signupWrap .remind {
+			text-align: center;
+		}
+		#signupWrap .error {
+			font-size: 12px;
+		    font-weight: 300;
+		    color: #96f;
+		}
+
+
+
+		#footer {
+			margin-top: 30px;
+			font-family: SimHei;
+			font-weight: 300;
+			font-size: 16px;
+			text-align: center;
+			color: #fff;
+		}
+
+
+		.fr {
+			float: right;
+		}
+
+		// app.css
+		.i-checks input {
+		  opacity: 0;
+		}
+		.i-checks input:checked + i {
+		  border-color: #545ca6;
+		}
+		.i-checks input:checked + i:before {
+		  position: absolute;
+		  left: 0px;
+		  width: 100%;
+		  top: 2px;
+		  text-align: center;
+		  font-family: "FontAwesome";
+		  font-style: normal;
+		  font-weight: normal;
+		  color: #545ca6;
+		}
+		.i-checks input[type="radio"] + i {
+		  border-radius: 100%;
+		}
+		.i-checks input[type="checkbox"]:checked + i:before {
+		  content: "\f00c";
+		}
+		.i-checks input[type="radio"]:checked + i:before {
+		  content: "\f111";
+		}
+		.i-checks input[disabled] + i,
+		fieldset[disabled] .i-checks input + i {
+		  border-color: #dbe2e7;
+		}
+		.i-checks input[disabled] + i:before,
+		fieldset[disabled] .i-checks input + i:before {
+		  color: #cbd5dd;
+		}
+		.i-checks i {
+		  width: 18px;
+		  height: 18px;
+		  line-height: 1;
+		  border: 1px solid #cbd5dd;
+		  background-color: #fff;
+		  margin-left: -20px;
+		  margin-top: -2px;
+		  display: inline-block;
+		  vertical-align: middle;
+		  margin-right: 4px;
+		  position: relative;
+		  font-size: 12px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5 col-md-offset-2">
+				<div id="signupWrap" class="animated bounceInRight">
+					<p>
+					加入花语
+					<span class="signinLink fr js-link-effect">已有账号，<a href="{:url('User/login')}">马上登陆</a></span></p>
+					<form action="index.html" id="signupForm">
+						<div class="form-group">
+							<input type="" id="account" name="account" placeholder="邮箱 or 手机" class="form-control input-lg">
+						</div>
+						<div class="form-group">
+							<input type="password" id="password" name="password" placeholder="密码" class="form-control input-lg">
+						</div>
+						<div class="form-group">
+							<input type="pass" id="confirmPassword" name="confirmPassword" placeholder="确认密码" class="form-control input-lg">
+						</div>
+						<div class="form-group">
+							<a id="postCode" class="btn btn-warning" disabled="disabled" role="button">接收验证码</a>
+							<input type="text" id="validate" name="validate" placeholder="获得的身份验证码" class="form-control input-lg">
+						</div>
+						<div class="checkbox i-checks">
+							<label>
+								<input type="checkbox" checked=""><i></i>记住登陆状态
+							</label>
+						</div>
+						<button type="submit" class="btn btn-lg btn-warning btn-block">加入花语</button>
+					</form>
+					<ul class="third-sign clearfix">
+						<li id="sina"></li>
+						<li id="qq"></li>
+						<li id="weixin"></li>
+					</ul>
+					<div class="remind js-link-effect">
+						<small class="">「注册」即代表你已经认真阅读并同意接受<a href="agreement.html" target="_blank">用户协议</a></small>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer id="footer">
+			<p>
+				<small><a href="{:url('Index/index')}" style="color: #fff">花语图社.青岛<br>&copy; 2017</a></small>
+			</p>
+		</footer>
+	</div>
+	<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.js"></script>
+	<!-- <script src="signup.js"></script> -->
+	<script>
+		+function(){
+			'use strict';
+		// 注册框居中控制
+			let dom = $('.container');
+			let offsetTop = ($(window).height() - dom.height()) / 4;
+			dom.css('margin-top', offsetTop + 'px');
+
+		// 登陆页面a-link动画小效果
+			$('.js-link-effect').on('mouseover', function(e) {
+				e.preventDefault();
+				// alert('')
+				let linkEl = $(this);
+				linkEl.addClass('animated flash');
+				setTimeout(function(){
+					linkEl.removeClass('animated flash');
+				}, 1500);
+			});
+
+		// 注册身份验证码发送控制
+			$('#postCode').click(function(event) {
+				event.preventDefault();
+				if ($('#postCode').attr('disabled')) { return; alert('') };
+				if (!$('#postCode').attr('disabled')) {
+					let self = this;		
+					// 点击后不能再次点击
+					$(self).attr('disabled', 'disabled');
+					// 时长
+					let i = 60*0.5;
+					let oldTxt = $(self).text();
+					let timer = setInterval(function(){
+						i--;
+						$(self).text('还剩' + i + 'S');
+					}, 1000);
+					setTimeout(function(){
+						// 恢复可点击状态
+						$(self).removeAttr('disabled');
+						// 清除定时器
+						clearTimeout(timer);
+						// 恢复按钮内文字
+						$(self).text(oldTxt);
+					}, 1000*i);
+				}
+			});
+
+		// 鉴别输入的账号类型
+			$('#account').on('blur', function(event) {
+				event.preventDefault();
+				let content = $(this).val();
+				let regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+				let regMobile = /^1[3-8][0-9]{9}$/;
+				if (regEmail.test(content)) {
+					$('#postCode').removeAttr('disabled');
+					$('#postCode').text('用邮箱接收验证码');
+					return '邮箱';
+				} else if (regMobile.test(content)) {
+					$('#postCode').removeAttr('disabled');
+					$('#postCode').text('用手机接收验证码');
+					return '手机';
+				} else {
+					$('#postCode').attr('disabled', 'disabled');
+				}
+			});
+
+		// 输入密码时，密码规则的提示
+			$('#password').on({
+				focus : function() {
+					// $("#password-error").remove();
+					let notice = `<label id="password-error" class="error" for="password">密码6~12位，必需同时包含数字、大小写字母，可以包含符号（注意：符号也有大小写的区分）</label>`;
+					$(notice).insertAfter(this);
+					console.log('获得')
+				},
+				blur : function() {
+					$("#password-error").remove();
+					console.log('失去')
+				}
+			});
+
+		// jQuery.Validate
+		// 自定义密码规则--"account"方法
+			$('#signupForm').validate({
+				rules : {
+					// debug : true,
+					account : {
+						required : true,
+						account  : true
+					},
+					password : {
+						required : true,
+						password : true,
+					},
+					confirmPassword : {
+					    equalTo: password
+					},
+					validate : {
+						required: true,
+						remote  : "/rsc/demo.json",
+					}
+				},
+				messages : {
+					account : {
+						required : '请输入邮箱或手机号码做为账户',
+					},
+					password : {
+						required : '请设置账户密码',
+					},
+					confirmPassword : {
+					    equalTo: "两次密码输入不一致"
+					},
+					validate : {
+						required: '请填写身份验证码',
+						remote  : "身份验证码不正确",
+					}
+				}
+			});
+			$.validator.addMethod("password", function(value, element, params){
+			    let password = /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,12}$/;
+			    return password.test(value);
+			}, $.validator.format("密码格式不符合要求"));
+			$.validator.addMethod("account", function(value, element, params){
+			    let email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+			    let mobile = /^1[3-9][0-9]{9}$/;
+			    return (mobile.test(value)) || (email.test(value));
+			}, $.validator.format("请检查您输入的「邮箱」或「手机号码」"));
+		}();
+	</script>
+</body>
+</html>
