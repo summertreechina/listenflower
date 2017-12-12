@@ -2,7 +2,7 @@
 namespace app\Admin\controller;
 use think\Controller;
 
-class Index extends Controller
+class IndexController extends Controller
 {
 		// 后台首页
     public function index() {

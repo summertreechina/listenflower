@@ -3,7 +3,7 @@ namespace app\common\model;
 use think\Model;
 use app\common\model\BaseModel;
 
-class User extends BaseModel {
+class UserModel extends BaseModel {
 
 	public function index() {
 	}

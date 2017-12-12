@@ -5,18 +5,18 @@
 </head>
 <body>
 <div class="pd-20">
-  <form action="" method="post" class="form form-horizontal" id="form-user-add">
+  <form action="{:url('Category/save')}" method="post" class="form form-horizontal" id="form-user-add">
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类名称：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="user-name" name="product-category-name">
+        <input type="text" class="input-text" value="" placeholder="" id="user-name" name="name">
       </div>
       <div class="col-5"> </div>
     </div>
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2">备注：</label>
       <div class="formControls col-5">
-        <textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
+        <textarea name="test" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
         <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
       </div>
       <div class="col-5"> </div>
@@ -33,8 +33,8 @@
 <!--请在下方写此页面业务相关的脚本--> 
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
-<script type="text/javascript">
+<script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script>
 $(function(){
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
@@ -42,6 +42,9 @@ $(function(){
 		increaseArea: '20%'
 	});
 });
+function textarealength() {
+  console.log('最多输入100字，需要完成');
+}
 </script>
 </body>
 </html>

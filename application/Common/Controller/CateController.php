@@ -2,7 +2,7 @@
 namespace app\Common\controller;
 use think\Controller;
 
-class Cate extends Controller
+class CateController extends Controller
 {
     public function index()
     {

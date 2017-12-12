@@ -2,7 +2,7 @@
 namespace app\Home\controller;
 use think\Controller;
 
-class User extends Controller
+class UserController extends Controller
 {
 		// 登录页面
     public function login()
