@@ -1,13 +1,20 @@
 <?php
 namespace app\Admin\controller;
 use think\Controller;
-use app\Admin\validate\Category as Cate_validate;
+use app\Common\CategoryModel;
+use app\Admin\validate\CategoryValidate;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-      return $this->fetch('cate-list');
+        // $ChildCitys = model('Cates')->getChildCate();
+        
+        return $this->fetch('cate-list');
+    }
+
+    Public function getCityList() {
+        return model('Cates')->getChildCate();
     }
 
     public function add() {
@@ -16,11 +23,12 @@ class CategoryController extends Controller
 
     public function save() {
     	$data = input('post.');
-    	$validate = new Cate_validate;
+    	$validate = new CategoryValidate;
     	if (!$validate->scene('add')->check($data)) {
     		$this->error($validate->getError());
     	}
     	// 将验证通过的 $data 数据提交给module层
+        model('Category')->add($data);
 
     }
 }

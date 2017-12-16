@@ -7,10 +7,6 @@ use think\Model;
 */
 class CategoryModel extends Model
 {
-	
-	function __construct()
-	{
-	}
 
 	public function add($data) {
 		$data['status'] = 1;

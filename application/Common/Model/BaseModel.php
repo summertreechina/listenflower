@@ -5,6 +5,7 @@ use think\Model;
 class BaseModel extends Model {
 
 	public function add() {
+		
 	}
 
 }

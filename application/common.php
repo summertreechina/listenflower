@@ -13,7 +13,7 @@
 
 
 //	超级打印 
-function P($var, $isDump = false, $break = true){
+function P($var, $isDump = true, $break = true){
 	$print = $isDump ? 'var_dump' : 'print_r';
 	if (empty($var)) {
 		echo 'null';

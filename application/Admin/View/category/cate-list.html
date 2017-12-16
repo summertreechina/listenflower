@@ -10,87 +10,126 @@
 	{include file="Common/menu"}
 
 <section class="Hui-article-box">
-	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分类管理 <span class="c-gray en">&gt;</span> 分类列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><a href="{:url('Index/index')}"> 首页 </a><span class="c-gray en">&gt;</span> 分类管理 <span class="c-gray en">&gt;</span> 分类列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="Hui-article">
+		<style>
+			article>.wrap {
+				display: inline-flex;
+				flex-flow: column wrap;
+				margin: 1rem;
+				border-right: 1px solid #fdd49a7a;
+				padding: 2rem;
+			}
+			.cate.city {
+				display: flex;
+				flex-flow: row wrap;
+				border-bottom: 1px solid #fdd49a7a;
+
+			}
+			.cate.city .item {
+				margin: 1.2rem .6rem .6rem .6rem;
+				padding: .2rem .4rem;
+			}
+		</style>
 		<article class="cl pd-20">
-			<table class="table">
-				<tr>
-					<td width="200" class="va-t"><ul id="treeDemo" class="ztree"></ul></td>
-					<td class="va-t">
-						<iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=390px SRC="{:url('category/add')}"></iframe>
-					</td>
-				</tr>
-			</table>
+			<div id="city-cate" class="wrap">
+				<ul class="cate city" attr="class_1">
+					<li class="item" v-text="title" v-on:click="getCityList"></li>
+				</ul>
+				<ul class="cate city" attr="class_1">
+					<li class="item" v-for="item in cityList">
+					  {{ item.c_name }}
+					</li>
+					<li class="item">北京</li>
+					<li class="item">天津</li>
+					<li class="item">上海</li>
+					<li class="item"><i class="icon Hui-iconfont"></i></li>
+				</ul>
+			</div>
+			<div class="wrap">
+				<ul class="cate city" attr="class_1">
+					<li class="item">管理员</li>
+				</ul>
+				<ul class="cate city" attr="class_1">
+					<li class="item">督查</li>
+					<li class="item">省长</li>
+					<li class="item"><i class="icon Hui-iconfont"></i></li>
+				</ul>
+			</div>
 		</article>
 	</div>
 </section>
+<script>
+	let SCOPE = {
+		'getCityList' : '{:url('Category/getCityList')}',
+	};
+</script>
 {include file="Common/script"}
 
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript" src="__STATIC__/Admin/H-ui/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
-{load href="__STATIC__/Admin/js/common.js"/}
+<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
+<script src="https://cdn.bootcss.com/Sortable/1.6.0/Sortable.js"></script>
+<!-- {load href="__STATIC__/Admin/js/common.js"/} -->
 <script>
-var setting = {
-	view: {
-		dblClickExpand: false,
-		showLine: false,
-		selectedMulti: false
-	},
-	data: {
-		simpleData: {
-			enable:true,
-			idKey: "id",
-			pIdKey: "pId",
-			rootPId: ""
-		}
-	},
-	callback: {
-		beforeClick: function(treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("tree");
-			if (treeNode.isParent) {
-				zTree.expandNode(treeNode);
-				return false;
-			} else {
-				demoIframe.attr("src",treeNode.file + ".html");
-				return true;
-			}
-		}
-	}
-};
 
-var zNodes =[
-	{ id:1, pId:0, name:"一级分类", open:true},
-	{ id:11, pId:1, name:"二级分类"},
-	{ id:111, pId:11, name:"三级分类"},
-	{ id:112, pId:11, name:"三级分类"},
-	{ id:113, pId:11, name:"三级分类"},
-	{ id:114, pId:11, name:"三级分类"},
-	{ id:115, pId:11, name:"三级分类"},
-	{ id:12, pId:1, name:"二级分类 1-2"},
-	{ id:121, pId:12, name:"三级分类 1-2-1"},
-	{ id:122, pId:12, name:"三级分类 1-2-2"},
-];
+// var setting = {
+// 	view: {
+// 		dblClickExpand: false,
+// 		showLine: false,
+// 		selectedMulti: false
+// 	},
+// 	data: {
+// 		simpleData: {
+// 			enable:true,
+// 			idKey: "id",
+// 			pIdKey: "pId",
+// 			rootPId: ""
+// 		}
+// 	},
+// 	callback: {
+// 		beforeClick: function(treeId, treeNode) {
+// 			var zTree = $.fn.zTree.getZTreeObj("tree");
+// 			if (treeNode.isParent) {
+// 				zTree.expandNode(treeNode);
+// 				return false;
+// 			} else {
+// 				demoIframe.attr("src",treeNode.file + ".html");
+// 				return true;
+// 			}
+// 		}
+// 	}
+// };
 
-var code;
+// var zNodes =[
+// 	{ id:1, pId:0, name:"一级分类", open:true},
+// 	{ id:11, pId:1, name:"二级分类"},
+// 	{ id:111, pId:11, name:"三级分类"},
+// 	{ id:112, pId:11, name:"三级分类"},
+// 	{ id:113, pId:11, name:"三级分类"},
+// 	{ id:114, pId:11, name:"三级分类"},
+// 	{ id:115, pId:11, name:"三级分类"},
+// 	{ id:12, pId:1, name:"二级分类 1-2"},
+// 	{ id:121, pId:12, name:"三级分类 1-2-1"},
+// 	{ id:122, pId:12, name:"三级分类 1-2-2"},
+// ];
 
-function showCode(str) {
-	if (!code) code = $("#code");
-	code.empty();
-	code.append("<li>"+str+"</li>");
-}
+// var code;
 
-$(document).ready(function(){
-	var t = $("#treeDemo");
-	t = $.fn.zTree.init(t, setting, zNodes);
-	demoIframe = $("#testIframe");
-	demoIframe.bind("load", loadReady);
-	var zTree = $.fn.zTree.getZTreeObj("tree");
-	zTree.selectNode(zTree.getNodeByParam("id",'11'));
-	// function loadReady() { console.log('loadReady') }
-});
+// function showCode(str) {
+// 	if (!code) code = $("#code");
+// 	code.empty();
+// 	code.append("<li>"+str+"</li>");
+// }
+
+// $(document).ready(function(){
+//    zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+// });
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
+
+
