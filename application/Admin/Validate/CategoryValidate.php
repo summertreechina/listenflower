@@ -8,16 +8,18 @@ use think\Validate;
 class CategoryValidate extends Validate
 {
 	protected $rule = [
-		['name', 'require|max:10'],
-		['parent_id', 'number'],
+		['c_name', 'require|max:10'],
+		['explain', 'require'],
+		['pid', 'number'],
 		['id', 'number'],
 		['status', 'number|in:-1,0,1'],
 		['list_order', 'number']
 	];
 
 	protected $message  =   [
-		'name.require' => '分类名称必须传递',
-		'name.max'     => '分类名称最多不能超过10个字符',
+		'c_name.require' => '分类名称必须传递',
+		'c_name.max'     => '分类名称最多不能超过10个字符',
+		'explain'     => '用于排序的城市分类拼音名称必须填写',
 		// 'name.min'     => '分类名称最少不能小于3个字符',
 		// ...
 		// 'age.number'   => '年龄必须是数字',
@@ -27,15 +29,14 @@ class CategoryValidate extends Validate
 
   // 场景设置
 	protected $scene = [
-		'add'        => ['name', 'parent_id'],		// 添加时验证
+		'add'        => ['c_name', 'pid', 'explain', 'status'],		// 添加时验证
 		'list_order' => ['id', 'list_order'],		// 排序时验证
-		// 'edit' =>  ['name','age'],
   ];
 
 	
 	function __construct()
 	{
-		return '运行构造函数';
+		// P($data);die;
 	}
 
 

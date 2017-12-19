@@ -13,7 +13,7 @@
 	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><a href="{:url('Index/index')}"> 首页 </a><span class="c-gray en">&gt;</span> 分类管理 <span class="c-gray en">&gt;</span> 分类列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="Hui-article">
 		<style>
-			article>.wrap {
+			.wrap {
 				display: inline-flex;
 				flex-flow: column wrap;
 				margin: 1rem;
@@ -30,6 +30,7 @@
 				margin: 1.2rem .6rem .6rem .6rem;
 				padding: .2rem .4rem;
 			}
+
 		</style>
 		<article class="cl pd-20">
 			<div id="city-cate" class="wrap">
@@ -37,15 +38,49 @@
 					<li class="item" v-text="title" v-on:click="getCityList"></li>
 				</ul>
 				<ul class="cate city" attr="class_1">
+					<li class="item">测试项目</li>
 					<li class="item" v-for="item in cityList">
 					  {{ item.c_name }}
 					</li>
-					<li class="item">北京</li>
-					<li class="item">天津</li>
-					<li class="item">上海</li>
-					<li class="item"><i class="icon Hui-iconfont"></i></li>
+					<li class="item" v-on:click="isShow=false"><i class="icon Hui-iconfont"></i></li>
 				</ul>
+				<div id="city-add" class="popup">
+
+				</div>
+
+				<article class="cl pd-20" style="width: 40rem;border:1px solid #396; z-index: 3;background-color: #fff" v-bind:class="{'hide': isShow}">
+					<form action="{:url('Category/save')}" method="post" class="form form-horizontal" id="form-city-add" novalidate="novalidate">
+						<div class="row cl">
+							<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>城市名称：</label>
+							<div class="formControls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="" id="c_name" name="c_name">
+							</div>
+						</div>
+						<div class="row cl">
+							<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+							<div class="formControls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="在此输入城市拼音,排序使用" id="" name="explain">
+							</div>
+						</div>
+						<div class="row cl">
+							<label class="form-label col-xs-4 col-sm-3">状态：</label>
+							<div class="formControls col-xs-8 col-sm-9">
+								<input type="checkbox" value="0" name="status">启用
+							</div>
+						</div>
+						<div class="row cl">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+								<span class="hide">
+									<input type="number" value="1" name="pid">
+								</span>
+								<button type="submit" class="btn btn-success radius" id="" name=""><i class="icon-ok"></i> 确定</button>
+							</div>
+						</div>
+					</form>
+				</article>
+				<div class="layui-layer-shade" id="layui-layer-shade2" cexplain="遮罩层" times="2" style="z-index:1; background-color:#000; opacity:0.2;" v-if="!isShow" v-on:click="isShow=true"></div>
 			</div>
+
 			<div class="wrap">
 				<ul class="cate city" attr="class_1">
 					<li class="item">管理员</li>
@@ -53,7 +88,7 @@
 				<ul class="cate city" attr="class_1">
 					<li class="item">督查</li>
 					<li class="item">省长</li>
-					<li class="item"><i class="icon Hui-iconfont"></i></li>
+					<li class="item" v-on:click="addCity"><i class="icon Hui-iconfont"></i></li>
 				</ul>
 			</div>
 		</article>

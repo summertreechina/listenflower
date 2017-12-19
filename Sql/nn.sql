@@ -70,11 +70,11 @@ DROP TABLE IF EXISTS `nn_cates`;
 CREATE TABLE `nn_cates` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `c_name` varchar(50) NOT NULL DEFAULT '' COMMENT '分类名称',
-  `cexplain` varchar(200) DEFAULT '' COMMENT '说明',
+  `explain` varchar(200) DEFAULT '' COMMENT '说明',
   `pid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '父级分类的id',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '分类状态',
-  `updated_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-  `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间都',
+  `update_time` int(11) unsigned COMMENT '更新时间',
+  `create_time` int(11) unsigned COMMENT '创建时间都',
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通用分类表';

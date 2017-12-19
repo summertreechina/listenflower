@@ -4,6 +4,8 @@ use think\Model;
 
 class CatesModel extends Model {
 
+	protected $autoWriteTimestamp = true;
+
 	public function _initialize() {
 		
 	}
@@ -21,8 +23,17 @@ class CatesModel extends Model {
 	}
 
 	public function addCate($data) {
+		// P($data);die;
+		if ($this->isExist($data)) {
+			return false;
+			// return exit('城市已存在，请检查录入');
+		}
+		$this->save($data);
+		return $this->id;
+	}
 
-
+	public function isExist($data) {
+		return $this->where(['pid'=> $data['pid'], 'c_name' => $data['c_name']])->find();
 	}
 
 	public function editCate() {
