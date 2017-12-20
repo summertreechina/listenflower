@@ -14,7 +14,9 @@ class CategoryController extends Controller
     }
 
     Public function getCityList() {
-        return model('Cates')->getChildCate();
+        $pid = input('get.pid/d');
+
+        return model('Cates')->getChildCate($pid);
     }
 
     public function add() {

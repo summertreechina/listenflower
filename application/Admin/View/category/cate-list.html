@@ -3,7 +3,6 @@
 <html>
 <head>
 	{include file="Common/meta" title="花语 | 后台.分类管理" keywords="$keywords" }
-	<link rel="stylesheet" href="__STATIC__/Admin/H-ui/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <body>
 	{include file="Common/header"}
@@ -39,7 +38,7 @@
 				</ul>
 				<ul class="cate city" attr="class_1">
 					<li class="item">测试项目</li>
-					<li class="item" v-for="item in cityList">
+					<li class="item" v-for="(item, key) in cityList" v-on:click="getCityList(item.id)">
 					  {{ item.c_name }}
 					</li>
 					<li class="item" v-on:click="isShow=false"><i class="icon Hui-iconfont"></i></li>
