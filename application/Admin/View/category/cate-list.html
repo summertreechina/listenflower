@@ -33,12 +33,11 @@
 		</style>
 		<article class="cl pd-20">
 			<div id="city-cate" class="wrap">
-				<ul class="cate city" attr="class_1">
-					<li class="item" v-text="title" v-on:click="getCityList"></li>
+				<ul class="cate city">
+					<li class="item" v-text="title" v-on:click="getCityList(currentPid)"></li>
 				</ul>
-				<ul class="cate city" attr="class_1">
-					<li class="item">测试项目</li>
-					<li class="item" v-for="(item, key) in cityList" v-on:click="getCityList(item.id)">
+				<ul class="cate city">
+					<li class="item" v-for="(item, key) in cityList" v-on:click="getCityList(item.id, item.c_name)">
 					  {{ item.c_name }}
 					</li>
 					<li class="item" v-on:click="isShow=false"><i class="icon Hui-iconfont"></i></li>
@@ -48,7 +47,7 @@
 				</div>
 
 				<article class="cl pd-20" style="width: 40rem;border:1px solid #396; z-index: 3;background-color: #fff" v-bind:class="{'hide': isShow}">
-					<form action="{:url('Category/save')}" method="post" class="form form-horizontal" id="form-city-add" novalidate="novalidate">
+					<form action="{:url('Category/save')}" method="post" class="form form-horizontal" id="form-city-add">
 						<div class="row cl">
 							<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>城市名称：</label>
 							<div class="formControls col-xs-8 col-sm-9">
@@ -70,7 +69,7 @@
 						<div class="row cl">
 							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 								<span class="hide">
-									<input type="number" value="1" name="pid">
+									<input type="number" v-bind:value="currentPid" name="pid">
 								</span>
 								<button type="submit" class="btn btn-success radius" id="" name=""><i class="icon-ok"></i> 确定</button>
 							</div>
@@ -81,10 +80,10 @@
 			</div>
 
 			<div class="wrap">
-				<ul class="cate city" attr="class_1">
+				<ul class="cate city" attr="">
 					<li class="item">管理员</li>
 				</ul>
-				<ul class="cate city" attr="class_1">
+				<ul class="cate city" attr="">
 					<li class="item">督查</li>
 					<li class="item">省长</li>
 					<li class="item" v-on:click="addCity"><i class="icon Hui-iconfont"></i></li>
