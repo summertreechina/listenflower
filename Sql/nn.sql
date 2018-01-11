@@ -82,7 +82,7 @@ CREATE TABLE `nn_cates` (
 /* 问题表 `nn_ask` */
 DROP TABLE IF EXISTS `nn_ask`;
 CREATE TABLE `nn_ask` (
-  `ask-id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `content` varchar(900) NOT NULL DEFAULT '' COMMENT '问题内容',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '问题状态，1审过，0待审，2软删除',
   `explain` varchar(900) DEFAULT '' COMMENT '答案解读',
@@ -90,19 +90,19 @@ CREATE TABLE `nn_ask` (
   `update_time` int(11) unsigned COMMENT '更新时间',
   `create_time` int(11) unsigned COMMENT '创建时间',
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
-  PRIMARY KEY (`ask-id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题表';
 
 
 /* 答案表 `nn_ans` */
 DROP TABLE IF EXISTS `nn_ans`;
 CREATE TABLE `nn_ans` (
-  `ans-id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `content` varchar(300) NOT NULL DEFAULT '' COMMENT '分类名称',
-  `ask-id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属的问题的id',
+  `ask_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属的问题的id',
   `isRight` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正确，0错误',
   `update_time` int(11) unsigned COMMENT '更新时间',
   `create_time` int(11) unsigned COMMENT '创建时间都',
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
-  PRIMARY KEY (`ans-id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='答案表';

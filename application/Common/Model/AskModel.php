@@ -8,11 +8,22 @@ class AskModel extends Model {
 
 	public function addQuestion($data) {
 		$this->save($data);
-		return $this;
+		return $this->id;
 	}
 
 	public function getQuestion($id) {
 
 	}
+
+	public function QuestionIsExist($content) {
+		$r = $this->where('content', $content)->find();
+		if ($r) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
+
 ?>

@@ -18,19 +18,19 @@ function P($var, $isDump = true, $break = true){
 	if (empty($var)) {
 		echo 'null';
 		if ($break) {
-			die;
+			// die;
 		}
 	} else if (is_array($var) || is_object($var)) {
 		echo '<pre style="color:#4CAF50">';
 		$print($var);
 		echo '</pre>';
 		if ($break) {
-			die;
+			// die;
 		}
 	} else {
 		var_dump($var);
 		if ($break) {
-			die;
+			// die;
 		}
 	}
 }
