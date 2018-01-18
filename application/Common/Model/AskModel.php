@@ -12,7 +12,7 @@ class AskModel extends Model {
 	}
 
 	public function getQuestion($id) {
-
+		return $this->get($id);
 	}
 
 	public function QuestionIsExist($content) {
@@ -22,6 +22,11 @@ class AskModel extends Model {
 		} else {
 			return false;
 		}
+	}
+
+	public function getAll() {
+		$r = $this->select();
+		return $r;
 	}
 
 }

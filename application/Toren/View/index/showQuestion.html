@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>题目显示</title>
+<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+<style>
+[v-cloak] {
+  display: none !important;
+}
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+main {
+	flex: 1;
+}
+#app {
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 20px;
+	color: #2c3e50;
+	margin-top: 80px;
+}
+.highlight {
+	padding: 9px 14px;
+	margin-bottom: 14px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+}
+.bs-callout {
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid #eee;
+	border-radius: 3px;
+	border-bottom-color: #aa6708;
+}
+.page-header {
+	padding-bottom: 9px;
+	margin: 40px 0 20px;
+	border-bottom: 1px solid #eee;
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<header>header</header>
+	<main>
+		<div class=container>
+			<div class="row">
+				<div class="col-md-7 col-md-offset-1">
+					<div id=app>
+						<div class="page-header">
+							<h1>消防监控室每日5分钟</h1>
+						</div>
+						<figure class="highlight">
+							<p>问：</p>
+							<div id="{$question.id}">{$question.content}</div>
+						</figure>
+						<div class="answer bs-callout">
+							{foreach $ansList as $key=>$val }
+							<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem">
+								<input type="checkbox" value="{$val.content}"> {$val.content}
+							</label>
+							{/foreach}
+						</div>
+						<div style="text-align:center;margin:2rem;">
+							<button class="btn btn-success" type="submit" style="width: 120px;font-size: 20px;">确认</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer>footer</footer>
+	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+	<script>
+		Vue.config.devtools = true;
+		let url = "{:url('Index/showQuestion')}";
+		// new Vue({
+		// 	el : '#app',
+		// 	data: {
+		// 		question: '',
+		// 		answerList: [],
+		// 	},
+		// 	mounted : function() {
+		// 		this.$nextTick(function(){
+		// 			this.renderQuestion();
+		// 		});
+		// 	},
+		// 	methods: {
+		// 		renderQuestion: function() {
+		// 			this.getData()
+		// 		},
+			// 	getData: function() {
+			// 		axios.get(url, {
+			// 			params: {
+			// 				id: 1
+			// 			}
+			// 		})
+			// 		.then(function (response) {
+			// 			console.log(response.content);
+			// 		})
+			// 		.catch(function (error) {
+			// 			console.log(error);
+			// 		});
+			// 	}
+			// }
+		// });
+	</script>
+</body>
+</html>
+

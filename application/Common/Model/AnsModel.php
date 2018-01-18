@@ -11,8 +11,9 @@ class AnsModel extends Model {
 		return $r;
 	}
 
-	public function getQuestion($id) {
-
+	public function getAnswers($id) {
+		$r = $this->where('ask_id', $id)->select();
+		return $r;
 	}
 }
 ?>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>试题列表</title>
+<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+<style>
+[v-cloak] {
+  display: none !important;
+}
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+main {
+	flex: 1;
+}
+#app {
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 14px;
+	color: #2c3e50;
+	margin-top: 80px;
+}
+i.fa {
+	transition: 0.3s;
+	position: relative;
+	cursor: pointer;
+	margin: 4px 8px;
+	font-size: 2rem;
+}
+i.fa:hover {
+	transform: scale(1.4);
+	color: #a33;
+}
+.td-2 {
+	width: 60%;
+	height: 60px;
+	line-height : 20px;
+	overflow:hidden;
+}
+/*.highlight {
+	padding: 9px 14px;
+	margin-bottom: 14px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+}
+.bs-callout {
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid #eee;
+	border-radius: 3px;
+	border-bottom-color: #aa6708;
+}
+.page-header {
+	padding-bottom: 9px;
+	margin: 40px 0 20px;
+	border-bottom: 1px solid #eee;
+	text-align: center;
+}*/
+</style>
+</head>
+<body>
+	<header>header</header>
+	<main>
+		<div class=container>
+			<div id=app>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+					  <thead>
+					    <tr>
+					      <th>编号</th>
+					      <th>内容</th>
+					      <th>类型(多选、单选)</th>
+					      <th>是否通过审定</th>
+					      <th>操作</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr v-for='item in questionList'>
+					      <th scope="row" v-text='item.id'></th>
+					      <td v-html="item.content" class="td-2"></td>
+					      <td>Table cell</td>
+					      <td><i class="fa fa-fw" v-bind:class="item.status?'fa-smile-o':'fa-frown-o'"></i></td>
+					      <td><i class="fa fa-pencil fa-fw" v-on:click="edit(item)"></i><i class="fa fa-trash-o fa-fw" v-on:click="del(item)"></i><i class="fa fa-cart-plus" v-on:click="inCart(item)"></i></td>
+					    </tr>
+					  </tbody>
+					</table>
+					</div>
+			</div>
+		</div>
+	</main>
+	<footer>footer</footer>
+	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+let url = "{:url('Index/getAllQuestion')}"
+var vm = new Vue({
+	el: "#app",
+	data: {
+		questionList: [],
+	},
+	filters: {
+
+	},
+	mounted () {
+		this.$nextTick(function(){
+			this.renderList();
+		});
+	},
+	methods: {
+		renderList: function() {
+			axios.get(url, {})
+			.then( (response) => {
+				this.questionList = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		},
+		edit: function(item) {
+			console.log(item.id);
+		},
+		del: function(item) {
+			swal({ 
+			  title: "确定删除试题吗？", 
+			  text: "删除之后将可以从回收站中找到！", 
+			  type: "warning",
+			  showCancelButton: true, 
+			  confirmButtonColor: "#DD6B55",
+			  confirmButtonText: "确定删除！", 
+			  cancelButtonText: "我再想想~", 
+			  closeOnConfirm: false
+			},
+			(isConfirm) => {
+				if (isConfirm) { 
+					let index = this.productList.indexOf(product);
+					this.productList.splice(index, 1);
+					swal("干得漂亮！", "订单信息已被删除！","success");
+				} else {
+					// 为什么 no isConfirm 时，走不到这里？后面再解决吧
+					swal("干得漂亮！", "订单信息未被删除！","success");
+				}
+			});
+		},
+		inCart: function(item) {
+
+		}
+	},
+});
+</script>
+</body>
+</html>
+
