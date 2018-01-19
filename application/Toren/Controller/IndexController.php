@@ -84,10 +84,38 @@ class IndexController extends Controller
     }
     public function checkIsRight() {
         $data = input('post.');
-        return json($data);
+        $msg = '';
+        $AnsList =  model('Ans')->getRightAnswers($data['id']);
+        // {"id":1,"checkedAnswers":["24，20","20，24","24，27"]}
+
+        if ($data['checkedAnswers'] == $AnsList) {
+            // 初检
+            $msg = 'right';
+            return json($msg);
+        } else {
+            // 碰撞检测
+            $num = count($AnsList);
+            $count = 0;
+            foreach ($data['checkedAnswers'] as $v) {
+                if (in_array($v, $AnsList)) {
+                    $count++;
+                } else {
+                    $msg = 'mistake';
+                    return json($msg);
+                }
+            }
+            if ($num === $count) {
+                $msg = 'right';
+                return json($msg);
+            } else {
+                $msg = 'mistake';
+                return json($msg);
+            }
+        }
     }
 
 // 显示所有试题
+    // 因为每天所有人都是做这几道题，所以将来需要把它放在缓存里，降低服务器的计算量
     public function QuestionList() {
         return $this->fetch();
     }

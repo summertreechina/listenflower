@@ -64,6 +64,7 @@ header {
 footer {
 	box-shadow: 0 1px 2px hsla(0,0%,60%,.2);
 	background-color: #444;
+	min-height: 4rem;
 }
 header *,
 footer * {
@@ -109,6 +110,11 @@ footer * {
 	margin: 3rem 0 8rem 0;
 	border-bottom: 1px solid #369;
 }
+.single-question img {
+	max-width: 80%;
+	max-height: 300px;
+	/*float: left;*/
+}
 </style>
 </head>
 <body>
@@ -137,20 +143,23 @@ footer * {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 col-md-offset-3">
+					<div class="col-xs-12 col-md-6 col-md-offset-3">
 						<div class="single-question" v-for="item in questionList">
 							<div class="ask" v-html="item.content"></div>
 							<div>
 								<a href="" v-html="item.explain"></a>
+								<br>
+								<a href="">请选择答案(不定项)：</a>
 							</div>
 							<div>
 								<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem" v-for="ans of item.answerList">
-									<input type="checkbox" v-bind:value="ans.content" v-on:change="checked(ans.content)">{{ans.content}}
+									<input type="checkbox" v-bind:value="ans.content" v-on:change="checked(ans)">{{ans.content}}
 								</label>
 							</div>
-							<div style="display:flex;justify-content:space-between;">
+							<div style="display:flex;justify-content:space-between;align-items: center;">
 								<i><small>出题人：{{item.author}}</small></i>
 								<button v-on:click="checkRight(item)" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
+								<!-- <div class="mask bg-success" style="position: absolute; width: 98%; height: 4rem;opacity: .9; margin: 0 auto; text-align: center; line-height: 4rem; overflow: hidden;">做错了！</div> -->
 							</div>
 						</div>
 					</div>
@@ -178,8 +187,7 @@ var vm = new Vue({
 	el: "#app",
 	data: {
 		questionList: [],
-		currentqQuestion: [],
-		currentCheckedItems: [],
+		checkedAnswers: [],
 	},
 	filters: {
 
@@ -195,31 +203,56 @@ var vm = new Vue({
 			.then( (response) => {
 				this.questionList = response.data;
 				this.questionList.forEach((question, index)=>{
+					this.$set(question, 'isDo', false);
 					question.answerList.forEach((ans, i)=>{
 						this.$set(ans, 'checked', false);
 					});
 				});
-				// this.$set(product, 'checked', true);
 			})
 			.catch(function (error) {
-				console.log(error);
+				alert(error);
 			});
 		},
 		checkRight: function(item) {
 			let id = item.id;
-			axios.post(checkUrl, {
-				id : id,
-				checkedAns : this.currentCheckedItems
-			})
-			.then(function (r) {
-			console.log(r);
-			})
-			.catch(function (e) {
-			console.log(e);
-			});
+			if (!item.isDo) {
+				if (this.checkedAnswers === undefined || this.checkedAnswers.length == 0) {
+					alert('我很偷懒的告诉你：你还没选任何答案就提交啊');
+				} else {
+					axios.post(checkUrl, {
+						id : id,
+						checkedAnswers : this.checkedAnswers
+					})
+					.then((r) => {
+						if (r.data == 'right') {
+							alert('正确！')
+						}
+						if (r.data == 'mistake') {
+							alert('错误！')
+						}
+						// 做完一题后将isDo置为true,不能再做
+						item.isDo = true;
+						// 将checkedAnswers中暂存的答案清空,为下一题腾出空间
+						this.checkedAnswers.length = 0;
+					})
+					.catch(function (e) {
+						console.log(e);
+					});
+				}
+			} else {
+				alert('您已经做过此题了！')
+			}
+
 		},
-		checked: function(content) {
-			console.log(content)
+		checked: function(ans) {
+			ans.checked = !ans.checked;
+			let content = ans.content;
+			if (ans.checked) {
+				this.checkedAnswers.push(content);
+			} else {
+				let index = this.checkedAnswers.indexOf(content);
+				this.checkedAnswers.splice(index, 1);
+			}
 		}
 	},
 });

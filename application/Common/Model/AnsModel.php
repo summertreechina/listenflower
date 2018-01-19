@@ -15,5 +15,10 @@ class AnsModel extends Model {
 		$r = $this->where('ask_id', $id)->select();
 		return $r;
 	}
+
+	public function getRightAnswers($id) {
+		$r = $this->where(array('ask_id'=>$id, 'isRight'=>1))->column('content');
+		return $r;
+	}
 }
 ?>
