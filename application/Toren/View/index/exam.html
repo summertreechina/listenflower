@@ -225,9 +225,11 @@ var vm = new Vue({
 					})
 					.then((r) => {
 						if (r.data == 'right') {
+							this.$set(item, 'score', true);
 							alert('正确！')
 						}
 						if (r.data == 'mistake') {
+							this.$set(item, 'score', false);
 							alert('错误！')
 						}
 						// 做完一题后将isDo置为true,不能再做
