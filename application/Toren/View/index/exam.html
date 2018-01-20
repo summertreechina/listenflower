@@ -97,6 +97,7 @@ footer * {
 	padding: 0 .6rem;
 	font-size: 3rem;
 }
+
 .time {
 	font-size: 1.8rem;
 	font-weight: 600;
@@ -106,6 +107,16 @@ footer * {
 	cursor: pointer;
 	text-shadow: 0px 0px 4px #369;
 }
+.score {
+	/*font-size: 1.2rem;*/
+	font-weight: 400;
+	margin: 1rem auto;
+	color: #ff5722;
+}
+.score span:hover {
+	cursor: pointer;
+	text-shadow: 0px 0px 4px #936;
+}
 .single-question {
 	margin: 3rem 0 8rem 0;
 	border-bottom: 1px solid #369;
@@ -113,7 +124,6 @@ footer * {
 .single-question img {
 	max-width: 80%;
 	max-height: 300px;
-	/*float: left;*/
 }
 </style>
 </head>
@@ -139,7 +149,10 @@ footer * {
 						<span>每日5分钟</span>
 					</div>
 					<div class="time">
-						<span>2018/01/17</span>
+						<span v-text="today">2018/01/17</span>
+					</div>
+					<div class="score">
+						<span>今日得分:{{score}}</span>
 					</div>
 				</div>
 				<div class="row">
@@ -147,20 +160,21 @@ footer * {
 						<div class="single-question" v-for="item in questionList">
 							<div class="ask" v-html="item.content"></div>
 							<div>
-								<a href="" v-html="item.explain"></a>
-								<br>
-								<a href="">请选择答案(不定项)：</a>
+								<p><a href="javascript:;" v-html="item.explain" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger"></a></p>
+								<p><span v-if="!item.isDo" class="text-primary">请选择答案：</span></p>
 							</div>
 							<div>
 								<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem" v-for="ans of item.answerList">
-									<input type="checkbox" v-bind:value="ans.content" v-on:change="checked(ans)">{{ans.content}}
+									<input type="checkbox" v-bind:value="ans.content" v-bind:disabled="item.isDo" v-on:change="checked(ans)">{{ans.content}}
 								</label>
 							</div>
 							<div style="display:flex;justify-content:space-between;align-items: center;">
 								<i><small>出题人：{{item.author}}</small></i>
-								<button v-on:click="checkRight(item)" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
-								<!-- <div class="mask bg-success" style="position: absolute; width: 98%; height: 4rem;opacity: .9; margin: 0 auto; text-align: center; line-height: 4rem; overflow: hidden;">做错了！</div> -->
+								<button v-on:click="checkRight(item)" v-bind:disabled="item.isDo" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
 							</div>
+						</div>
+						<div>
+							再做一遍？
 						</div>
 					</div>
 				</div>
@@ -188,10 +202,20 @@ var vm = new Vue({
 	data: {
 		questionList: [],
 		checkedAnswers: [],
+		// timerShow: true,
+		// totalTime: [],
+		rightItemNum: 0,
+		step: 0,
+		today: '',
+		score: 0,
 	},
-	filters: {
+	computed: {
+		totalItem: function() {
+			return this.questionList.length;
+		},
 
 	},
+	filters: {},
 	mounted () {
 		this.$nextTick(function(){
 			this.render();
@@ -199,6 +223,7 @@ var vm = new Vue({
 	},
 	methods: {
 		render: function() {
+			this.showToday();
 			axios.get(url, {})
 			.then( (response) => {
 				this.questionList = response.data;
@@ -217,7 +242,7 @@ var vm = new Vue({
 			let id = item.id;
 			if (!item.isDo) {
 				if (this.checkedAnswers === undefined || this.checkedAnswers.length == 0) {
-					alert('我很偷懒的告诉你：你还没选任何答案就提交啊');
+					swal("亲，您忘记选择答案了", "😄", "warning");
 				} else {
 					axios.post(checkUrl, {
 						id : id,
@@ -226,12 +251,17 @@ var vm = new Vue({
 					.then((r) => {
 						if (r.data == 'right') {
 							this.$set(item, 'score', true);
-							alert('正确！')
+							this.$set(item, 'showExolain', false);
+							this.rightItemNum++;
+							swal("您太厉害了，这都能答对！", "👍","success")
 						}
 						if (r.data == 'mistake') {
 							this.$set(item, 'score', false);
-							alert('错误！')
+							this.$set(item, 'showExolain', true);
+							swal("您终于答错了！", "😏","error")
 						}
+						this.step++;
+						this.calcScore();
 						// 做完一题后将isDo置为true,不能再做
 						item.isDo = true;
 						// 将checkedAnswers中暂存的答案清空,为下一题腾出空间
@@ -242,9 +272,8 @@ var vm = new Vue({
 					});
 				}
 			} else {
-				alert('您已经做过此题了！')
+				swal("您已经做过这道题目了", "😄", "warning");
 			}
-
 		},
 		checked: function(ans) {
 			ans.checked = !ans.checked;
@@ -255,10 +284,40 @@ var vm = new Vue({
 				let index = this.checkedAnswers.indexOf(content);
 				this.checkedAnswers.splice(index, 1);
 			}
-		}
+		},
+		showExolain: function(item) {
+			swal({ 
+				title: "",
+				text: item.explain, 
+				html: true 
+			});
+		},
+		showToday: function() {
+			let D = new Date();
+			let y = D.getFullYear();
+			let w = D.getDay();
+			let m = D.getMonth();
+			let d = D.getDate();
+			this.today = `${y}-${m}-${d}/星期${w}`;
+		},
+		showScore: function() {},
+		calcScore: function() {
+			this.score = (this.rightItemNum / this.totalItem) * 100;
+			if (this.totalItem == this.step) {
+				setTimeout(()=>{
+					swal({ 
+					  title: "",
+					  text: `<p style="font-weight:500;font-size:1.6rem">亲，恭喜您完成了所有题目!</p><br><p>此次获得：<span style="color:#ff5722;font-weight:800;font-size:2rem">${this.score}<span>分</p>`,
+					  html: true 
+					});
+				},3000); 
+			} else {}
+		},
+		submitScore: function() {}
 	},
 });
 </script>
 </body>
 </html>
+
 

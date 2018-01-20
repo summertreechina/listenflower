@@ -86,7 +86,6 @@ class IndexController extends Controller
         $data = input('post.');
         $msg = '';
         $AnsList =  model('Ans')->getRightAnswers($data['id']);
-        // {"id":1,"checkedAnswers":["24，20","20，24","24，27"]}
 
         if ($data['checkedAnswers'] == $AnsList) {
             // 初检
