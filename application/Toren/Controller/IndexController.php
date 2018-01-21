@@ -131,6 +131,9 @@ class IndexController extends Controller
 
     }
 
+    public function login() {
+        $data = input('post.');
+        return json($data);
+    }
 
-    
 }
