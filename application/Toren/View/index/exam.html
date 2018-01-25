@@ -123,11 +123,18 @@ fieldset {
 	<header>
 		<div class="brand-bar">brand</div>
 		<div class="user-bar">
-			<a href="javascript:;" class="" v-on:click="login()">登录</a>
-			<span class="">|</span>
-			<a href="javascript:;" class="" v-on:click="regist()">注册</a>
-			<span class="">|</span>
-			<a href="javascript:;" class="" v-on:click="msg()">消息通知</a>
+			<template v-if="!user">
+				<a href="javascript:;" v-on:click="login()">登录</a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="regist()">注册</a>
+			</template>
+			<template v-else>
+				<a href="javascript:;" v-text="user"></a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="logout()">退出</a>
+				<span>|</span>
+			</template>
+				<a href="javascript:;" v-on:click="msg()">消息通知</a>
 		</div>
 	</header>
 	<main>
@@ -140,10 +147,16 @@ fieldset {
 						<span>每日5分钟</span>
 					</div>
 					<div class="time">
-						<span v-text="today">2018/01/17</span>
+						<span v-text="today" v-on:click="DatePicker()"></span>
 					</div>
 					<div class="score">
-						<span>今日最高分:{{score}}</span>
+						<template v-if="user">
+							<!-- 测试点 -->
+							<span>今日最高分:{{ maxScore }}</span>
+						</template>
+						<template v-else>
+							<span>未登录用户</span>
+						</template>
 					</div>
 				</div>
 				<div class="row">
@@ -169,6 +182,10 @@ fieldset {
 							<p>本系统自动将今日最高分作为您的成绩  :）！</p>
 							<p>如果您对成绩不满意，可以选择<a class="score" v-on:click="reload()">再做一遍</a>！</p>
 							<p>如果您是未注册用户，系统无法保存每日成绩。</p>
+						</div>
+						<div id="DatePicker">
+							<div id="time-line">时间线</div>
+							<input type="date"/>
 						</div>
 					</div>
 				</div>
@@ -199,6 +216,12 @@ fieldset {
 let url = "{:url('Index/getQuestions')}"
 let checkUrl = "{:url('Index/checkIsRight')}"
 let loginUrl = "{:url('Index/login')}"
+let getUser = "{:url('Index/isLogin')}"
+let logoutUrl = "{:url('Index/logout')}"
+let saveScoreUrl = "{:url('Index/saveScore')}"
+const URL = {
+	maxScoreUrl: "{:url('Index/getMaxScore')}",
+}
 var vm = new Vue({
 	el: "#app",
 	data: {
@@ -209,6 +232,11 @@ var vm = new Vue({
 		today: '',
 		score: 0,
 		isShowScore: false,
+		user: '',
+		userid: '',
+		mobile: '',
+		maxScore: '',
+		userinfo: [],
 	},
 	computed: {
 		totalItem: function() {
@@ -218,13 +246,15 @@ var vm = new Vue({
 	filters: {},
 	mounted () {
 		this.$nextTick(function(){
+			this.getUser();
 			this.render();
 		});
 	},
+	watch: {},
 	methods: {
 		render: function() {
 			this.showToday();
-			axios.get(url, {})
+			axios.get(url)
 			.then( (response) => {
 				this.questionList = response.data;
 				this.questionList.forEach((question, index)=>{
@@ -295,7 +325,7 @@ var vm = new Vue({
 		showToday: function() {
 			let D = new Date();
 			let y = D.getFullYear();
-			let m = D.getMonth();
+			let m = D.getMonth() + 1;
 			let d = D.getDate();
 			let w = D.getDay() || '日';
 			this.today = `${y}-${m}-${d}/星期${w}`;
@@ -304,6 +334,9 @@ var vm = new Vue({
 		calcScore: function() {
 			this.score = (this.rightItemNum / this.totalItem) * 100;
 			if (this.totalItem == this.step) {
+				if (this.userid) {
+					this.submitScore();
+				}
 				setTimeout(()=>{
 					swal({ 
 					  title: "",
@@ -314,9 +347,23 @@ var vm = new Vue({
 				},2000); 
 			} else {}
 		},
-		submitScore: function() {},
+		submitScore: function() {
+			axios.post(saveScoreUrl, {
+						uid : this.userid,
+						score : this.score,
+				})
+				.then( (response)=> {
+					this.getMaxScore();
+				  console.log(response);
+				})
+				.catch( (error)=> {
+				  console.log(error);
+				  alert('通信问题，成绩未能提交，请再次尝试，如未解决请联系管理员')
+				});
+		},
 		reload: function() {
 			window.location.reload();
+			// this.render();
 		},
 		login: function() {
 			swal({
@@ -329,26 +376,80 @@ var vm = new Vue({
 				cancelButtonText: "取消",
 				showCancelButton: true,
 			},
-			function(){
+			()=>{
 				let mobile = document.querySelector("#mobile").value;
 				let password = document.querySelector("#password").value;
-				axios.post(loginUrl, {
-					mobile : mobile,
-					password : password,
-				}).then(doneCallbacks, failCallbacks);
-				function doneCallbacks(){};
-				function failCallbacks(){};
+				if (mobile=="" || password=="") {
+					alert("信息不完整！");
+				} else {
+					axios.post(loginUrl, {
+						mobile : mobile,
+						password : password,
+					}).then((r)=>{
+						this.getUser();
+					}).catch((e)=>{
+						console.log(e);
+					});
+				}
 			})
 		},
+		logout: function() {
+			axios.get(logoutUrl).then((r)=>{
+				console.log(r)
+				if (r.data) {
+					this.getUser();
+					this.render();
+				}
+			});
+		},
+		getUser: function() {
+			axios.get(getUser).then((r)=>{
+				if (r.data) {
+					this.user = r.data['uname'];
+					this.mobile = r.data['mobile'];
+					this.userid = r.data['id'];
+					this.userinfo = r.data;
+					this.getMaxScore();
+				} else {
+					this.user = null;
+					this.mobile = null;
+					this.userid = null;
+					this.userinfo.length = 0;
+				}
+			});
+		},
+		getMaxScore: function() {
+			axios.post(URL.maxScoreUrl, {
+				'uid' : this.userid,
+			})
+			.then((r)=>{
+				// console.log(r)
+				if (r) {
+					this.maxScore = r.data;
+				} else {
+					this.maxScore = 0;
+				}
+			})
+			.catch((e)=>{
+				console.log(e);
+			});
+		},
 		regist: function() {
+			// axios.get("{:url('Index/getLoginUser')}").then((r)=>{
+			// 	console.log(r.data);
+			// });
 			swal({ 
 				title: "对外注册的工作还未准备好", 
 				text: "3秒后自动关闭", 
 				type: "info",
 				timer: 3000, 
-				showConfirmButton: false 
+				showConfirmButton: false
 			});
 		},
+		msg: function() {},
+		DatePicker: function() {
+			let html = ``;
+		}
 	},
 });
 </script>

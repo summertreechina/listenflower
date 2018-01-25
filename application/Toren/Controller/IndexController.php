@@ -60,7 +60,7 @@ class IndexController extends Controller
     }
 // 从后台取得今日试题(返回试题ID)
     public function todayQuestions() {
-        $todayQuestions = array(1,2,3,4,5);
+        $todayQuestions = array(1, 2, 3, 4,5);
         // $todayQuestions = array(1,2);
         return $todayQuestions;
     }
@@ -130,10 +130,89 @@ class IndexController extends Controller
     public function softDelQuestion() {
 
     }
-
+// 用户登录
     public function login() {
-        $data = input('post.');
-        return json($data);
+        if (request()->isAjax()) {
+            return json('非法访问');
+        }
+        $data['mobile'] = input('post.mobile/d');
+        $data['password'] = md5(input('post.password/s'));
+
+        $user = model('Truser')->getByMobile($data['mobile']);
+        if (!$user) {
+            $res = array('status'=>0, 'msg'=>'用户不存在' );
+            return json($res);
+        };
+        if ($data['password'] != $user['password']) {
+            $res = array('status'=>0, 'msg'=>'密码错误');
+            return json($res);
+        };
+        if (!$user['isActive']) {
+            $res = array('status'=>0, 'msg'=>'账户被锁定，请联系管理员');
+            return json($res);
+        }
+        $showUserinfo = array(
+            'id' => $user->id,
+            'uname' => $user->uname,
+            'mobile' => $user->mobile,
+        );
+        session('TRUser', $showUserinfo, 'Toren');
+        return json([ 'status'=>1, 'msg'=>'登录成功', 'username'=>$user['uname'] ]);
+    }
+    public function logout() {
+        session(null, 'Toren');
+        return json(true);
+    }
+
+    public function isLogin() {
+        $user = $this->getLoginUser();
+        if ($user && $user['id']) {
+            return json($user);
+        }
+        return json(null);
+    }
+
+    // private
+    private function getLoginUser() {
+        $account = session('TRUser', '', 'Toren');
+        return $account;
+    }
+
+    public function saveScore() {
+        $uid = input('post.uid/d');
+        $score = input('post.score/d');
+        $data = array(
+            'user_id' => $uid,
+            'score' => $score
+        );
+        // return json($data);
+        $r = model('TRUserScore')->add($data);
+        return json($r);
+    }
+
+    public function getMaxScore() {
+        $uid = input('post.uid/d');
+        $r = model('TRUserScore')->maxScore($uid);
+        return json($r);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

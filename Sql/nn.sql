@@ -106,3 +106,30 @@ CREATE TABLE `nn_ans` (
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='答案表';
+
+/* 用户表 `TR用户表` */
+DROP TABLE IF EXISTS `nn_TRUser`;
+CREATE TABLE `nn_TRUser` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `uname` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
+  `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `ec_salt` varchar(10) DEFAULT NULL COMMENT '秘钥',
+  `isActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态',
+  `updated_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB auto_increment=1 DEFAULT CHARSET=utf8 COMMENT='TR用户表';
+
+/* TR用户成绩表 `nn_TRUserScore` */
+DROP TABLE IF EXISTS `nn_TRUserScore`;
+CREATE TABLE `nn_TRUserScore` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '成绩id',
+  `score` int(4) unsigned NOT NULL DEFAULT '0' COMMENT '成绩',
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TR用户成绩表';
+
+
