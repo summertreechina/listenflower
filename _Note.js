@@ -134,6 +134,79 @@
 
 
 
+ThinkPHP 
+	DB
+		name() 选择数据库
+		table() 选择表
+		insertAll() 插入多条记录（数组）
+		updata() 更新数据
+		setField() 更改字段
+		setInc() 自增一
+		setDec() 自减一
+		delet() 可以直接 输入id 如果想删除所有数据 where("1=1")
+
+		条件构造器???
+			buildSql() 返回sql查询语句  <> 不等于
+			where() 可以连续使用where设置查询条件
+			whereOr() 
+			feild() 返回某个字段
+			group() 按某个字段进行分组
+
+		四种方式引入 model
+			use app\index\model\User;
+			use think\Loader;
+			$res = User::get($id);
+
+			$user = new User;
+			$user = Loader::model("User");
+			$user = model("User");
+			$res = $user::get($id);
+
+			$res = $res->toArray();
+
+		数据的添加
+			User::create();
+
+			$userModel = new User;
+			$userModel->save();
+
+		利用模型查询数据
+			$res = User::get($id);
+			$res = User::get(function($query){
+				$query->where('id', 'eq', 1);
+			});
+
+		利用table进行多表查询
+			$data = M()->table(array('mk_user'=>'user', 'mk_userinfo'=>'info'))->where('user.id=info.user_id')->select();
+
+		多表查询之 join 方法
+			1. 字符串方法
+			使用字符串事可以拓展左查询、右查询、可以多次查询等
+			$data = M('User')
+			->join('mk_userinfo On mk_userinfo.user_id=mk_user.id')
+			->select();
+			2. 数组方法
+			数组方法只能查询一次
+			$data = M('User')
+			->join(array('mk_userinfo On mk_userinfo.user_id=mk_user.id'))
+			->select();
+		多表查询之 union 方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

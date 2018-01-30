@@ -40,7 +40,7 @@ class IndexController extends Controller
                 $r = $AnsModel->addAnswers($content);
             }
     	}
-        return json(['status' => '1', 'info' => '成功']);
+        return json(['status' => '1', 'info' => '提交成功']);
     }
 // 显示一个试题
     public function showQuestion() {
