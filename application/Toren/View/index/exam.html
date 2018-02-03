@@ -178,7 +178,7 @@ fieldset {
 						<div class="single-question" v-for="item in questionList">
 							<div class="ask" v-html="item.content"></div>
 							<div>
-								<p><a href="javascript:;" v-html="item.explain" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger"></a></p>
+								<p><a href="javascript:;" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger">题目分析</a></p>
 								<p><span v-if="!item.isDo" class="text-primary">请选择答案：</span></p>
 							</div>
 							<div>

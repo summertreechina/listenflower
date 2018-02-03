@@ -3,6 +3,7 @@ namespace app\Toren\controller;
 use think\Controller;
 use app\Common\Model\AskModel;
 use app\Common\Model\AnsModel;
+use app\Common\Model\TRTomorrowModel;
 
 class IndexController extends Controller
 {
@@ -11,15 +12,16 @@ class IndexController extends Controller
       return $this->fetch();
     }
 
-// 
+// 添加题目和答案
     public function addQueAc() {
     	$obj = input('post.');
     	$data = [
     		'content' => $obj['askContent']['cont'],
     		'status' => 1,
-    		'explain' => '解题说明',
-    		'author' => '那个谁'
+    		'explain' => $obj['explain'],
+    		'author' => $obj['author']
     	];
+
         $askModel = new askModel();
         $isExist = $askModel->QuestionIsExist($data['content']);
         if ($isExist) {
@@ -58,15 +60,37 @@ class IndexController extends Controller
     public function exam() {
        return $this->fetch();
     }
+// 存入每日试题
+    public function tomorrow() {
+        $data = input('post.', '', 'strip_tags,htmlspecialchars');
+        // $checked = json_encode($data['checkedList']);
+        $checked = $data['checkedList'];
+        $tomorrow = new TRTomorrowModel;
+        $res = $tomorrow->save([
+            'items' => $checked,
+            'use_time' => (time() + 60*60*24)
+        ]);
+        if ($res) {
+            $msg = ['res'=> true, 'info'=>'题目已经放入明日题库！'];
+        } else {
+            $msg = ['res'=> false, 'info'=>'数据保存失败，请联系管理员'];
+        }
+        return json($msg);
+    }
+
 // 从后台取得今日试题(返回试题ID)
     public function todayQuestions() {
-        $todayQuestions = array(1, 2, 3, 4,5);
-        // $todayQuestions = array(1,2);
-        return $todayQuestions;
+        $tomorrow = new TRTomorrowModel;
+        $todayQuestions = $tomorrow->getToday();
+        // echo getType($todayQuestions->items);
+        // print_r($todayQuestions->items);
+        return $todayQuestions->items;
     }
 // 客户端通过ajax方法获得今日试题
     public function getQuestions() {
         $questions = $this->todayQuestions();
+        // $questions = ["1","2","5","4","3","10"];
+        // var_dump($questions);die;
         $allQeustion = array();
         foreach ($questions as $k => $v) {
             $askModel = new askModel();
@@ -81,6 +105,7 @@ class IndexController extends Controller
             $allQeustion[$k]['answerList'] = $answerList;
         }
         return json($allQeustion);
+        // return json($questions);
     }
     public function checkIsRight() {
         $data = input('post.');
@@ -116,6 +141,9 @@ class IndexController extends Controller
 // 显示所有试题
     // 因为每天所有人都是做这几道题，所以将来需要把它放在缓存里，降低服务器的计算量
     public function QuestionList() {
+        return $this->fetch();
+    }
+    public function list() {
         return $this->fetch();
     }
     public function getAllQuestion() {
@@ -195,6 +223,8 @@ class IndexController extends Controller
         $r = model('TRUserScore')->maxScore($uid);
         return json($r);
     }
+
+
 
 }
 

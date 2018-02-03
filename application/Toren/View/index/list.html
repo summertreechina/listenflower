@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=dege,chrom=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <title>试题列表</title>
+    <link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+    <link href="__STATIC__/Toren/css/base.css" rel="stylesheet">
+    <link href="__STATIC__/Toren/css/checkout.css" rel="stylesheet">
+    <link href="__STATIC__/Toren/css/modal.css" rel="stylesheet">
+    <link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+    <link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+    <style type="text/css">
+        [v-cloak] {
+            display: none !important;
+        }
+        div, button {
+          border-radius: .1rem !important;
+        }
+        .quentity input {
+            width: 40px;
+            padding: 5px 10px;
+            text-align: center;
+        }
+        .cart-tab-5 i.fa {
+          font-size: 1.6rem;
+          margin: 0 .3rem;
+        }
+        .cart-tab-5 i.fa:hover {
+          color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout">
+      <div id="app" v-cloak>
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <defs>
+            <symbol id="icon-add" viewBox="0 0 32 32">
+              <title>add2</title>
+              <path class="path1" d="M15 17h-13.664c-0.554 0-1.002-0.446-1.002-1 0-0.552 0.452-1 1.002-1h13.664v-13.664c0-0.554 0.446-1.002 1-1.002 0.552 0 1 0.452 1 1.002v13.664h13.664c0.554 0 1.002 0.446 1.002 1 0 0.552-0.452 1-1.002 1h-13.664v13.664c0 0.554-0.446 1.002-1 1.002-0.552 0-1-0.452-1-1.002v-13.664z"></path>
+            </symbol>
+            <symbol id="icon-ok" viewBox="0 0 39 32">
+              <title>ok</title>
+              <path class="path1" d="M14.084 20.656l-7.845-9.282c-1.288-1.482-3.534-1.639-5.016-0.351s-1.639 3.534-0.351 5.016l10.697 12.306c1.451 1.669 4.057 1.623 5.448-0.096l18.168-22.456c1.235-1.527 0.999-3.765-0.528-5.001s-3.765-0.999-5.001 0.528l-15.573 19.337z"></path>
+            </symbol>
+            <symbol id="icon-edit" viewBox="0 0 32 32">
+              <title>edit</title>
+              <path class="path1" d="M25.599 11.292l-4.892-4.892 3.825-3.825 4.892 4.892-3.825 3.825zM4.732 23.308l3.959 3.959-5.939 1.98 1.98-5.939zM10.666 26.225l-4.892-4.892 13.425-13.425 4.892 4.892-13.425 13.425zM31.687 6.713l-6.4-6.4c-0.417-0.417-1.091-0.417-1.508 0l-20.267 20.267c-0.114 0.115-0.191 0.25-0.242 0.393-0.003 0.009-0.012 0.015-0.015 0.025l-3.2 9.6c-0.128 0.383-0.029 0.806 0.257 1.091 0.203 0.204 0.476 0.313 0.754 0.313 0.112 0 0.227-0.017 0.337-0.054l9.6-3.2c0.011-0.003 0.017-0.013 0.027-0.016 0.142-0.052 0.276-0.128 0.39-0.242l20.267-20.267c0.417-0.416 0.417-1.091 0-1.508v0z"></path>
+            </symbol>
+            <symbol id="icon-del" viewBox="0 0 26 32">
+              <title>delete</title>
+              <path class="path1" d="M17.723 28c0.543 0 0.984-0.448 0.984-1v-12c0-0.552-0.441-1-0.984-1s-0.985 0.448-0.985 1v12c0 0.552 0.441 1 0.985 1v0zM7.877 28c0.543 0 0.984-0.448 0.984-1v-12c0-0.552-0.441-1-0.984-1s-0.985 0.448-0.985 1v12c0 0.552 0.441 1 0.985 1v0zM12.8 28c0.543 0 0.985-0.448 0.985-1v-12c0-0.552-0.441-1-0.985-1s-0.984 0.448-0.984 1v12c0 0.552 0.441 1 0.984 1v0zM23.631 4h-5.908v-2c0-1.104-0.882-2-1.969-2h-5.908c-1.087 0-1.969 0.896-1.969 2v2h-5.908c-1.087 0-1.969 0.896-1.969 2v2c0 1.104 0.882 2 1.969 2v18c0 2.208 1.765 4 3.939 4h13.784c2.174 0 3.938-1.792 3.938-4v-18c1.087 0 1.969-0.896 1.969-2v-2c0-1.104-0.882-2-1.969-2v0zM9.846 3c0-0.552 0.441-1 0.984-1h3.938c0.544 0 0.985 0.448 0.985 1v1h-5.908v-1zM21.662 28c0 1.104-0.882 2-1.969 2h-13.784c-1.087 0-1.97-0.896-1.97-2v-18h17.723v18zM22.646 8h-19.692c-0.543 0-0.985-0.448-0.985-1s0.441-1 0.985-1h19.692c0.543 0 0.984 0.448 0.984 1s-0.441 1-0.984 1v0z"></path>
+            </symbol>
+            <symbol id="icon-clock" viewBox="0 0 32 32">
+              <title>clock</title>
+              <path class="path1" d="M29.333 16c0-7.364-5.97-13.333-13.333-13.333s-13.333 5.97-13.333 13.333c0 7.364 5.97 13.333 13.333 13.333s13.333-5.97 13.333-13.333v0 0 0 0 0 0zM0 16c0-8.837 7.163-16 16-16s16 7.163 16 16c0 8.837-7.163 16-16 16s-16-7.163-16-16zM14.667 14.667v1.333h2.667v-10.667h-2.667v9.333zM24 18.667h1.333v-2.667h-10.667v2.667h9.333z"></path>
+            </symbol>
+          </defs>
+        </svg>
+        <div class="container">
+          <div class="cart">
+            <div class="checkout-title">
+              <span v-text="pageTitle" v-once></span>
+            </div>
+
+            <!-- table -->
+            <div class="item-list-wrap">
+              <div class="cart-item">
+                <div class="cart-item-head">
+                  <ul>
+                    <li>题目</li>
+                    <li>空</li>
+                    <li>多选、单选</li>
+                    <li>是否通过审定</li>
+                    <li>操作</li>
+                  </ul>
+                </div>
+                <ul class="cart-item-list">
+                  <li v-for="item in questionList">
+
+                    <div class="cart-tab-1">
+                      <div class="cart-item-check">
+                        <a href="javascript:;" class="item-check-btn" v-bind:class="{'check':item.checked}" v-on:click="selectQuestion(item)">
+                          <svg class="icon icon-ok"><use xlink:href="#icon-ok"></use></svg>
+                        </a>
+                      </div>
+                      <div class="cart-item-pic" v-html="item.content" v-on:click="detail(item)"></div>
+                    </div>
+
+                    <div class="cart-tab-2">
+                      <div class="item-price">🈳️</div>
+                    </div>
+
+                    <div class="cart-tab-3">
+                      <div class="item-quantity">
+                        <div class="item-stock">单选</div>
+                      </div>
+                    </div>
+
+                    <div class="cart-tab-4">
+                      <div class="cart-item-operation">
+                        <a href="javascript:;" class="item-edit-btn">
+                          是
+                        </a>
+                      </div>
+                    </div>
+                    <div class="cart-tab-5">
+                      <div class="cart-item-operation">
+                        <a href="javascript:;" v-on:click="edit(item)">
+                          <i class="fa fa-pencil fa-fw"></i>
+                        </a>
+                        <a href="javascript:;" v-on:click="del(item)">
+                          <i class="fa fa-trash-o fa-fw"></i>
+                        </a>
+                        <a href="javascript:;" v-on:click="add(item)">
+                          <i class="fa fa-cart-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- footer -->
+            <div class="cart-foot-wrap">
+              <div class="cart-foot-l">
+                <div>分页位置</div>
+              </div>
+              <div class="cart-foot-r">
+                <div class="next-btn-wrap">
+                  <a v-on:click="submit()" href="javascript:;" class="btn btn--red" style="width: 200px">提交明日题库</a>
+                </div>
+              </div>
+            </div>
+            <div style="color: #468847;background-color: #dff0d8;border: 1px solid #d6e9c6;padding: 15px;font-weight: 700;text-align: center;border-radius: 4px;position:fixed; bottom: 2rem;left:2rem">{{ totalItem }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
+<script>
+  const url = {
+    question: "{:url('Index/getAllQuestion')}",
+    tomorrow: "{:url('Index/tomorrow')}"
+  };
+  
+  var vm = new Vue({
+    el: "#app",
+    data: {
+      pageTitle: '同人试题列表',
+      questionList: [],
+      checkedList: [],
+    },
+    mounted () {
+      this.$nextTick(function(){
+        this.renderList();
+      });
+    },
+    computed: {
+      totalItem: function() {
+        return this.checkedList.length || 0;
+      },
+    },
+    methods: {
+      renderList: function() {
+        axios.get(url.question, {})
+        .then( (response) => {
+          this.questionList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      },
+      selectQuestion: function(item) {
+        if (typeof item.checked == 'undefined') {
+          this.$set(item, 'checked', true);
+        } else {
+          item.checked = !item.checked;
+        };
+        if (item.checked) {
+          this.checkedList.push(item.id);
+        } else {
+          let index = this.checkedList.indexOf(item.id);
+          this.checkedList.splice(index, 1);
+        };
+      },
+      showQuestion: function(item) {
+
+      },
+      edit: function(item) {
+        console.log(item.id);
+      },
+      del: function(item) {
+        // swal({ 
+        //   title: "确定删除试题吗？", 
+        //   text: "删除之后将可以从回收站中找到！", 
+        //   type: "warning",
+        //   showCancelButton: true, 
+        //   confirmButtonColor: "#DD6B55",
+        //   confirmButtonText: "确定删除！", 
+        //   cancelButtonText: "我再想想~", 
+        //   closeOnConfirm: false
+        // },
+        // (isConfirm) => {
+        //   if (isConfirm) { 
+        //     swal("OK！", "题目已经放入回收站！","success");
+        //   }
+        // });
+      },
+      add: function(item) {
+      },
+      submit: function() {
+        if (!this.totalItem) {
+          alert('您尚未选择任何试题！');
+        } else {
+          swal({ 
+            title: "", 
+            text: `您选择了<span style="color:red;font-weight:600;margin:0 .6rem">${this.totalItem}</span>道试题，确定提交到明日题库？`, 
+            type: "warning",
+            showCancelButton: true, 
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定了！", 
+            cancelButtonText: "再想想~", 
+            closeOnConfirm: false,
+            html: true
+          },
+          (isConfirm) => {
+            if (isConfirm) {
+              axios.post(url.tomorrow, {
+                checkedList: this.checkedList,
+              })
+              .then((res)=>{
+                if (res.data.res) {
+                  swal("OK！", res.data.info,"success");
+                } else {
+                  swal("很遗憾！", res.data.info, "error");
+                }
+              })
+              .catch((err)=>{
+                console.log(err);
+              });
+              }
+          });
+        }
+      },
+      detail: function(item) {
+        window.open();
+      },
+    },
+  });
+</script>
+</body>
+</html>

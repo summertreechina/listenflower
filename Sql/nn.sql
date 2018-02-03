@@ -89,6 +89,7 @@ CREATE TABLE `nn_ask` (
   `author` varchar(30) NOT NULL DEFAULT '' COMMENT '问题提供者',
   `update_time` int(11) unsigned COMMENT '更新时间',
   `create_time` int(11) unsigned COMMENT '创建时间',
+  `delete_time` int(11) unsigned COMMENT '软删除时间',
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题表';
@@ -102,7 +103,7 @@ CREATE TABLE `nn_ans` (
   `ask_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属的问题的id',
   `isRight` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正确，0错误',
   `update_time` int(11) unsigned COMMENT '更新时间',
-  `create_time` int(11) unsigned COMMENT '创建时间都',
+  `create_time` int(11) unsigned COMMENT '创建时间',
   `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='答案表';
@@ -132,4 +133,13 @@ CREATE TABLE `nn_TRUserScore` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TR用户成绩表';
 
+/* TR用明日题库 `nn_TRTomorrow` */
+DROP TABLE IF EXISTS `nn_TRTomorrow`;
+CREATE TABLE `nn_TRTomorrow` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '题库id',
+  `items` varchar(600) NOT NULL DEFAULT '' COMMENT '试题id',
+  `update_time` int(11) unsigned COMMENT '更新时间',
+  `create_time` int(11) unsigned COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TR明日试题';
 
