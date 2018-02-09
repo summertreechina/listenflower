@@ -44,6 +44,7 @@ class IndexController extends Controller
     	}
         return json(['status' => '1', 'info' => '提交成功']);
     }
+
 // 显示一个试题
     public function showQuestion() {
         $questionId = input('get.id/d');
@@ -56,20 +57,23 @@ class IndexController extends Controller
 
         return $this->fetch();
     }
+
 // 考试页显示
     public function exam() {
        return $this->fetch();
     }
+
 // 存入每日试题
-    public function tomorrow() {
+    // $how 时间调节 1今天 0昨天 2明天 3后天...
+    public function tomorrow($how=1) {
         $data = input('post.', '', 'strip_tags,htmlspecialchars');
-        // $checked = json_encode($data['checkedList']);
         $checked = $data['checkedList'];
         $tomorrow = new TRTomorrowModel;
         $res = $tomorrow->save([
             'items' => $checked,
-            'use_time' => (time() + 60*60*24)
+            'use_time' => date('Y-m-d', (time() + 60*60*24*$how))
         ]);
+        // echo $tomorrow->use_time;
         if ($res) {
             $msg = ['res'=> true, 'info'=>'题目已经放入明日题库！'];
         } else {
@@ -79,18 +83,20 @@ class IndexController extends Controller
     }
 
 // 从后台取得今日试题(返回试题ID)
-    public function todayQuestions() {
+    public function todayQuestions($timestamp) {
+
         $tomorrow = new TRTomorrowModel;
-        $todayQuestions = $tomorrow->getToday();
-        // echo getType($todayQuestions->items);
-        // print_r($todayQuestions->items);
-        return $todayQuestions->items;
+        $todayQuestions = $tomorrow->getToday($timestamp);
+        return $todayQuestions;
     }
 // 客户端通过ajax方法获得今日试题
     public function getQuestions() {
-        $questions = $this->todayQuestions();
-        // $questions = ["1","2","5","4","3","10"];
-        // var_dump($questions);die;
+        $timestamp = input('get.timestamp/d');
+        $questions = $this->todayQuestions($timestamp);
+        if (!$questions) {
+            return json(['msg'=>'昨天管理员懒癌发作了，没有出题。今天全员满分。']);
+        }
+
         $allQeustion = array();
         foreach ($questions as $k => $v) {
             $askModel = new askModel();
@@ -105,8 +111,9 @@ class IndexController extends Controller
             $allQeustion[$k]['answerList'] = $answerList;
         }
         return json($allQeustion);
-        // return json($questions);
     }
+
+// 
     public function checkIsRight() {
         $data = input('post.');
         $msg = '';
@@ -143,9 +150,11 @@ class IndexController extends Controller
     public function QuestionList() {
         return $this->fetch();
     }
+
     public function list() {
         return $this->fetch();
     }
+
     public function getAllQuestion() {
         $list = model('ask')->getAll();
         return json($list);

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>日历</title>
+<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+<style>
+	[v-cloak] {
+	  display: none !important;
+	}
+	#app {
+		display: flex;
+		min-height: 100vh;
+		flex-direction: column;
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-size: 14px;
+		color: #2c3e50;
+	}
+	main {
+		flex: 1;
+	}
+	header,
+	footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 3rem;
+		padding: 0 3rem;
+	}
+	header {
+		box-shadow: 0 1px 8px hsla(0,0%,60%,.2);
+	}
+	footer {
+		box-shadow: 0 1px 2px hsla(0,0%,60%,.2);
+		background-color: #444;
+		min-height: 4rem;
+	}
+	header *,
+	footer * {
+		padding: 0 .6rem;
+	}
+	.title-wrap	{
+		text-align: center;
+		margin-top: 8rem;
+	}
+	.title {
+		width: 360px;
+		margin: 0 auto;
+		text-transform: uppercase;
+		font-family: Politica;
+		position: relative;
+	}
+	.title:after {
+		content: "";
+		display: block;
+		width: 100%;
+		height: 1px;
+		background: #e8e8e8;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		z-index: -1;
+	}
+	.title span {
+		background: #fff;
+		color: #000;
+		padding: 0 .6rem;
+		font-size: 3rem;
+	}
+	.time {
+		font-size: 2rem;
+		font-weight: 400;
+		margin: 3rem auto;
+		color: #ff5722;
+	}
+	.time .fa {
+		color: #33669921;
+		margin: .4rem;
+	}
+	.time .fa:hover {
+		cursor: pointer;
+		color: #369;
+		text-shadow: 0px 0px 4px #396;
+	}
+	.single-question {
+		margin: 3rem 0 8rem 0;
+		border-bottom: 1px solid #369;
+	}
+	.single-question img {
+		max-width: 80%;
+		max-height: 300px;
+	}
+	.restart {
+		margin-top: -50px;margin-bottom: 30px;padding: 1rem;background-color: #fcf8e387;
+	}
+	.loginInput {
+		max-width: 300px;
+		margin: 0 auto;
+		/*sweetalert*/
+	}
+	fieldset {
+		display: none;
+		/*sweetalert*/
+	}
+	#time-line {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	#time-line span {
+		width: 2.3rem;
+		height: 2.3rem;
+		background-color: rgb(235, 237, 240);
+		border: 1px solid #fff; 
+		border-radius: 50%;
+		text-align: center;
+		line-height: 2.1rem;
+		color: #fff;
+	}
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+	<header>
+		<div class="brand-bar">brand</div>
+		<div class="user-bar">
+			<template v-if="!user">
+				<a href="javascript:;" v-on:click="login()">登录</a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="regist()">注册</a>
+			</template>
+			<template v-else>
+				<a href="javascript:;" v-text="user"></a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="logout()">退出</a>
+				<span>|</span>
+			</template>
+				<a href="javascript:;" v-on:click="msg()">消息通知</a>
+		</div>
+	</header>
+	<main>
+		<div class="container">
+				<div class="title-wrap">
+					<div class="title">
+						<span>后台每日试题审查</span>
+					</div>
+					<div class="time">
+						<i class="fa fa-arrow-left" v-on:click=changeTime(-1)></i>
+						<span v-text="showTime"></span>
+						<i class="fa fa-arrow-right" v-on:click=changeTime(1)></i>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-md-6 col-md-offset-3">
+						<div class="single-question" v-for="item in questionList">
+							<div class="ask" v-html="item.content"></div>
+							<div>
+								<p><a href="javascript:;" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger">题目分析</a></p>
+								<p><span v-if="!item.isDo" class="text-primary">请选择答案：</span></p>
+							</div>
+							<div>
+								<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem" v-for="ans of item.answerList">
+									<input type="checkbox" v-bind:value="ans.content" v-bind:disabled="item.isDo" v-on:change="checked(ans)">{{ans.content}}
+								</label>
+							</div>
+							<div style="display:flex;justify-content:space-between;align-items: center;">
+								<i><small>出题人：{{item.author}}</small></i>
+								<button v-on:click="checkRight(item)" v-bind:disabled="item.isDo" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+	</main>
+	<footer>
+		<div class="brand-bar" style="color: #999;">
+			<span>Tel:0532-55561119</span>
+			<span style="color: black;">|</span>
+			<span>Mobile:13366933112</span>
+			<span style="color: black;">|</span>
+		</div>
+		<div class="user-bar">
+			<a href="#" class="">我要出题</a>
+			<span class="">|</span>
+			<a href="#" class="">意见反馈</a>
+			<span class="">|</span>
+			<a href="#" class="">特别感谢</a>
+		</div>
+	</footer>
+</div>
+	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+	<script src="https://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
+	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+const URL = {
+	getQuestions: "{:url('Index/getQuestions')}",
+	checkUrl: "{:url('Index/checkIsRight')}",
+	loginUrl: "{:url('Index/login')}",
+	getUser: "{:url('Index/isLogin')}",
+	logoutUrl: "{:url('Index/logout')}",
+}
+var vm = new Vue({
+	el: "#app",
+	data: {
+		questionList: [],
+		checkedAnswers: [],
+		rightItemNum: 0,
+		step: 0,
+		time: '',
+		user: '',
+		userid: '',
+		mobile: '',
+		userinfo: [],
+	},
+	computed: {
+		totalItem: function() {
+			return this.questionList.length;
+		},
+		showTime: function() {
+			return this.formatDay(this.time);
+		}
+	},
+	filters: {},
+	mounted () {
+		this.$nextTick(function(){
+			this.initDay();
+			this.getUser();
+			this.render();
+		});
+	},
+	watch: {},
+	methods: {
+		render: function() {
+			this.getQuestions();
+		},
+		getQuestions: function() {
+			axios.get(URL.getQuestions, {params:{'timestamp': this.time}})
+			.then( (response) => {
+				if (response.data.msg) {
+					console.log(response.data.msg)
+					swal(response.data.msg, "👍","success");
+				} else {
+					this.questionList = response.data;
+					this.questionList.forEach((question, index)=>{
+						this.$set(question, 'isDo', false);
+						question.answerList.forEach((ans, i)=>{
+							this.$set(ans, 'checked', false);
+						});
+					});
+				}
+			})
+			.catch(function (err) {
+				console.log(err);
+			});
+		},
+		checkRight: function(item) {
+			let id = item.id;
+			if (!item.isDo) {
+				if (this.checkedAnswers === undefined || this.checkedAnswers.length == 0) {
+					swal("亲，您忘记选择答案了", "😄", "warning");
+				} else {
+					axios.post(URL.checkUrl, {
+						id : id,
+						checkedAnswers : this.checkedAnswers
+					})
+					.then((r) => {
+						if (r.data == 'right') {
+							this.$set(item, 'score', true);
+							this.$set(item, 'showExolain', false);
+							this.rightItemNum++;
+							swal("您太厉害了，这都能答对！", "👍","success")
+						}
+						if (r.data == 'mistake') {
+							this.$set(item, 'score', false);
+							this.$set(item, 'showExolain', true);
+							swal("您终于答错了！", "😏","error")
+						}
+						this.step++;
+						// 做完一题后将isDo置为true,不能再做
+						item.isDo = true;
+						// 将checkedAnswers中暂存的答案清空,为下一题腾出空间
+						this.checkedAnswers.length = 0;
+					})
+					.catch(function (e) {
+						console.log(e);
+					});
+				}
+			} else {
+				swal("您已经做过这道题目了", "😄", "warning");
+			}
+		},
+		checked: function(ans) {
+			ans.checked = !ans.checked;
+			let content = ans.content;
+			if (ans.checked) {
+				this.checkedAnswers.push(content);
+			} else {
+				let index = this.checkedAnswers.indexOf(content);
+				this.checkedAnswers.splice(index, 1);
+			}
+		},
+		showExolain: function(item) {
+			swal({ 
+				title: "",
+				text: item.explain, 
+				html: true 
+			});
+		},
+		initDay: function() {
+			let D = new Date();
+			let tt = D.getTime();
+			this.time = tt;
+		},
+		formatDay: function(timestamp) {
+			let D = new Date(timestamp);
+			let y = D.getFullYear();
+			let m = D.getMonth() + 1;
+			let d = D.getDate();
+			let w = D.getDay();
+			let arr = ['日', '一', '二', '三', '四', '五', '六'];
+			return `${y}-${m}-${d}/星期${arr[w]}`;
+		},
+		changeTime: function(flag) {
+			let oneDay = 60*60*24*1000;
+			this.time = this.time + oneDay * flag;
+			// 这里有个简便方法，timestamp设为对象属性，用watch监视，变化时执行存储动作
+			this.questionList.length = 0;
+			this.getQuestions();
+		},
+		reload: function() {
+			window.location.reload();
+			this.render();
+		},
+		login: function() {
+			swal({
+				title: "<small>登录</small>",
+				text: `手机号码 <input type="number" name='mobile' id="mobile" placeholder="手机号码" class="loginInput">
+							密码 <input type='text' name='password' id="password" placeholder="密码" class="loginInput">`,
+				html: true,
+				type: "prompt",
+				confirmButtonText: "提交",
+				cancelButtonText: "取消",
+				showCancelButton: true,
+			},
+			()=>{
+				let mobile = document.querySelector("#mobile").value;
+				let password = document.querySelector("#password").value;
+				if (mobile=="" || password=="") {
+					alert("信息不完整！");
+				} else {
+					axios.post(loginUrl, {
+						mobile : mobile,
+						password : password,
+					}).then((r)=>{
+						this.getUser();
+					}).catch((e)=>{
+						console.log(e);
+					});
+				}
+			})
+		},
+		logout: function() {
+			axios.get(logoutUrl).then((r)=>{
+				console.log(r)
+				if (r.data) {
+					this.getUser();
+					this.render();
+				}
+			});
+		},
+		getUser: function() {
+			axios.get(URL.getUser).then((r)=>{
+				if (r.data) {
+					this.user = r.data['uname'];
+					this.mobile = r.data['mobile'];
+					this.userid = r.data['id'];
+					this.userinfo = r.data;
+				} else {
+					this.user = null;
+					this.mobile = null;
+					this.userid = null;
+					this.userinfo.length = 0;
+				}
+			});
+		},
+		regist: function() {
+			swal({ 
+				title: "对外注册的工作还未准备好", 
+				text: "3秒后自动关闭", 
+				type: "info",
+				timer: 3000, 
+				showConfirmButton: false
+			});
+		},
+		msg: function() {},
+	},
+});
+</script>
+</body>
+</html>
+
+

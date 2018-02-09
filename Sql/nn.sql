@@ -138,8 +138,9 @@ DROP TABLE IF EXISTS `nn_TRTomorrow`;
 CREATE TABLE `nn_TRTomorrow` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '题库id',
   `items` varchar(600) NOT NULL DEFAULT '' COMMENT '试题id',
-  `update_time` int(11) unsigned COMMENT '更新时间',
-  `create_time` int(11) unsigned COMMENT '创建时间',
-  PRIMARY KEY (`id`),
+  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `use_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '使用时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TR明日试题';
 
