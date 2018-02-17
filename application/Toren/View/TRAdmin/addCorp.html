@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>单位管理</title>
+<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+<style>
+
+</style>
+</head>
+<body>
+<div>
+	<header>
+		<div class="brand-bar">brand</div>
+		<div class="user-bar">
+			<template v-if="!user">
+				<a href="javascript:;" v-on:click="login()">登录</a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="regist()">注册</a>
+			</template>
+			<template v-else>
+				<a href="javascript:;" v-text="user"></a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="logout()">退出</a>
+				<span>|</span>
+			</template>
+				<a href="javascript:;" v-on:click="msg()">消息通知</a>
+		</div>
+	</header>
+	<main>
+		<div class="container">
+				<div class="title-wrap">
+					<div class="title">
+						<span>后台每日试题审查</span>
+					</div>
+					<div class="time">
+						<i class="fa fa-arrow-left" v-on:click=changeTime(-1)></i>
+						<span v-text="showTime"></span>
+						<i class="fa fa-arrow-right" v-on:click=changeTime(1)></i>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-md-6 col-md-offset-3">
+						<div class="single-question" v-for="item in questionList">
+							<div class="ask" v-html="item.content"></div>
+							<div>
+								<p><a href="javascript:;" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger">题目分析</a></p>
+								<p><span v-if="!item.isDo" class="text-primary">请选择答案：</span></p>
+							</div>
+							<div>
+								<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem" v-for="ans of item.answerList">
+									<input type="checkbox" v-bind:value="ans.content" v-bind:disabled="item.isDo" v-on:change="checked(ans)">{{ans.content}}
+								</label>
+							</div>
+							<div style="display:flex;justify-content:space-between;align-items: center;">
+								<i><small>出题人：{{item.author}}</small></i>
+								<button v-on:click="checkRight(item)" v-bind:disabled="item.isDo" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+	</main>
+	<footer>
+		<div class="brand-bar" style="color: #999;">
+			<span>Tel:0532-55561119</span>
+			<span style="color: black;">|</span>
+			<span>Mobile:13366933112</span>
+			<span style="color: black;">|</span>
+		</div>
+		<div class="user-bar">
+			<a href="#" class="">我要出题</a>
+			<span class="">|</span>
+			<a href="#" class="">意见反馈</a>
+			<span class="">|</span>
+			<a href="#" class="">特别感谢</a>
+		</div>
+	</footer>
+</div>
+	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+	<script src="https://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
+	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+</script>
+</body>
+</html>
+
+

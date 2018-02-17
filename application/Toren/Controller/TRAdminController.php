@@ -10,6 +10,13 @@ class TRAdminController extends Controller {
 		return $this->fetch();
 	}
 
+	public function addUser() {
+
+	}
+
+	public function addCorp() {
+		return $this->fetch();
+	}
 
 }
 ?>

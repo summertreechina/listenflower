@@ -193,6 +193,16 @@ ThinkPHP
 		多表查询之 union 方法
 
 
+PHP 
+	手动获取异常的数据
+		// https://www.kancloud.cn/manual/thinkphp5_1/354092
+		try {
+			model('User')->add($data);
+		} catch (\Exception $e) {
+			$this->error($e->getMessage());
+		}
+
+
 
 
 
