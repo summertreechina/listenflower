@@ -1,7 +1,7 @@
 <?php
 namespace app\Common\controller;
 use think\Controller;
-use think\Env;
+use \think\Request;
 use TP\Auth;
 
 class AuthController extends Controller
@@ -11,15 +11,22 @@ class AuthController extends Controller
     	if (!$sess_auth) {
     		$this->error('没有登录，正在返回');
     	}
-    	print_r($sess_auth);
 
-    	// if ($sess_auth['id'] == 3) {
-    	// 	return true;
-    	// }
-
-    	$auth = new Auth();
-    	if (!$auth->check( Env::get('module_path').'/'.Env::get('controller_path').'/'.Env::get('action_path'), $sess_auth['id'])) {
+    	if ($sess_auth['id'] == 3) {
+    		// 3是总管理员的ID
+    		return true;
+    	}
+    	
+			$auth       = new Auth();
+			$request    = Request::instance();
+			$module     = $request->module();
+			$controller = $request->controller();
+			$action     = $request->action();
+			
+    	if (!$auth->check( $module.'/'.$controller.'/'.$action, $sess_auth['id'])) {
     		$this->error('没有权限，正在返回');
+    	} else {
+    		return true;
     	}
     }
 }
