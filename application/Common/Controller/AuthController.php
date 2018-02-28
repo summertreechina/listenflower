@@ -1,13 +1,14 @@
 <?php
 namespace app\Common\controller;
 use think\Controller;
-use \think\Request;
+use think\Request;
 use TP\Auth;
 
 class AuthController extends Controller
 {
     protected function _initialize() {
     	$sess_auth = session('TRUser', '', 'Toren');
+        // print_r($sess_auth);die;
     	if (!$sess_auth) {
     		$this->error('没有登录，正在返回');
     	}
@@ -17,11 +18,11 @@ class AuthController extends Controller
     		return true;
     	}
     	
-			$auth       = new Auth();
-			$request    = Request::instance();
-			$module     = $request->module();
-			$controller = $request->controller();
-			$action     = $request->action();
+		$auth       = new Auth();
+		$request    = Request::instance();
+		$module     = $request->module();
+		$controller = $request->controller();
+		$action     = $request->action();
 			
     	if (!$auth->check( $module.'/'.$controller.'/'.$action, $sess_auth['id'])) {
     		$this->error('没有权限，正在返回');

@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>后台主页</title>
-<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
-<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
-<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
-<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
-<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+
+{include file='com/meta' title="新增单位-同人消防" /}
+
 <style>
 	[v-cloak] {
 	  display: none !important;
@@ -25,6 +20,7 @@
 	}
 	main {
 		flex: 1;
+		padding-bottom: 3rem;
 	}
 	header,
 	footer {
@@ -92,40 +88,18 @@
 		display: none;
 		/*sweetalert*/
 	}
-	.area-block {
-		margin-bottom: 4rem;
-	}
-	.area-block h4 {
-		margin-bottom: 2rem;
-	}
-	.area-block .btn {
-		border-radius: 3px;
-		border: 2px solid #dce4ec;
-	}
 </style>
 </head>
 <body>
 <div id="app" v-cloak>
-	<header>
-		<div class="brand-bar" style="color:#4d3333;font-weight:800;text-shadow: 0 0 1px #4d3333;">Toren 试题后台管理页</div>
-		<div class="user-bar">
-			<template v-if="!user">
-				<a href="javascript:;" v-on:click="login()">登录</a>
-			</template>
-			<template v-else>
-				<a href="javascript:;"  v-text="user"></a>
-				<span>|</span>
-				<a href="javascript:;" v-on:click="logout()">退出</a>
-				<span>|</span>
-			</template>
-				<a href="javascript:;" v-on:click="msg()">消息通知</a>
-		</div>
-	</header>
+
+	{include file='com/header' /}
+
 	<main>
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>同人消防后台管理系统</span>
+						<span>同人消防后台管理系统-新增单位</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -134,85 +108,97 @@
 						<span v-text="today"></span>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-xs-12 col-md-10 col-md-offset-1">
-						{/* 注释内容 */ }
-						<div class="area-block">
-							<h4>单位管理</h4>
-							<div class="row">
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有单位</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="{:url('Corp/addView')}" role="button" target="_blank">新增单位</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">link</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">回收站</a>
-								</div>
+				<div class="row" style="padding: 3rem 0">
+					{/* 页面左侧表单 */ }
+					<div class="col-md-6">
+						<form class="form-horizontal" method="post" action="{:url('corp/add')}">
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label">公司名称</label>
+							  <div class="col-sm-10">
+							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" v-model='corpname' name="corpname">
+							  </div>
 							</div>
-						</div>
-						{/* 注释内容 */ }
-						<div class="area-block">
-							<h4>会员管理</h4>
-							<div class="row">
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有会员</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">新增会员</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">Link</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">Link</a>
-								</div>
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label">公司昵称</label>
+							  <div class="col-sm-10">
+							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" v-model='nickname' name="nickname">
+							  </div>
 							</div>
-						</div>
-						{/* 注释内容 */ }
-						<div class="area-block">
-							<h4>试题管理</h4>
-							<div class="row">
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">新增试题</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有试题</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">提交明日试题</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">查看明日试题</a>
-								</div>
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label">地&emsp;&emsp;址</label>
+							  <div class="col-sm-10">
+							    <input type="text" class="form-control" v-model='address' name='address'>
+							  </div>
 							</div>
-						</div>
+						  <div class="form-group">
+						    <label for="" class="col-sm-2 control-label">联&nbsp;系&nbsp;&nbsp;人</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" v-model='corpuser' name='corpuser'>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="" class="col-sm-2 control-label">联系方式</label>
+						    <div class="col-sm-10">
+						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." v-model='contact' name='contact'></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="" class="col-sm-2 control-label">其他资料</label>
+						    <div class="col-sm-10">
+						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" v-model='other' name='other'></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						  	<div class="col-sm-offset-2 col-sm-10">
+						  		<label class="radio-inline">
+						  		  <input type="radio" name="upper" value="0" v-model="hasupper"> 无上级单位
+						  		</label>
+						  		<label class="radio-inline">
+						  		  <input type="radio" name="upper" value="1" v-model="hasupper"> 有上级单位
+						  		</label>
+						  	</div>
+						  </div>
+
+						  {/* 上级单位显示区域 */ }
+						  <div class="form-group animated fadeIn" v-show='hasupper==1'>
+						    <label for="" class="col-sm-2 control-label">上级单位</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" v-model='uppercorp' name='uppercorp'>
+						    </div>
+						  </div>
+						  <div class="form-group" v-if='hasupper==1'>
+						  	<div class="col-sm-offset-2 col-sm-10">
+						  		如果有上级单位在这里显示
+						  	</div>
+						  </div>
+						  <div class="form-group" v-if="isfull">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
+						    </div>
+						  </div>
+						</form>
+					</div>
+
+					{/* 页面右侧辅助区 */ }
+					<div class="col-md-6">
+						<select multiple class="form-control" style="height: 33rem;" v-if='hasupper==1'>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
 					</div>
 				</div>
 		</div>
 	</main>
-	<footer>
-		<div class="brand-bar" style="color: #999;">
-			<span>Tel:0532-55561119</span>
-			<span style="color: black;">|</span>
-			<span>Mobile:13366933112</span>
-			<span style="color: black;">|</span>
-		</div>
-		<div class="user-bar">
-			<a href="#" class="">我要出题</a>
-			<span class="">|</span>
-			<a href="#" class="">意见反馈</a>
-			<span class="">|</span>
-			<a href="#" class="">特别感谢</a>
-		</div>
-	</footer>
+
+	{include file="com/footer" /}
+	
 </div>
-	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
-	<script src="https://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
-	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+	{include file='com/script' /}
+	
 <script>
 const URL = {
 	maxScoreUrl: "{:url('Index/getMaxScore')}",
@@ -228,8 +214,32 @@ var vm = new Vue({
 	data: {
 		today: '',
 		user: '',
+		corpname: '',
+		nickname: '',
+		address: '',
+		corpuser: '',
+		contact: '',
+		other: '',
+		hasupper: 0,
+		uppercorp: '',
+		submitShow: 1,
 	},
 	computed: {
+		isfull: function() {
+			if (this.corpname && this.address && this.corpuser && this.contact) {
+				if (!this.hasupper) {
+					return true;
+				} else {
+					if (this.uppercorp) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		}
 	},
 	filters: {},
 	mounted () {
@@ -238,7 +248,8 @@ var vm = new Vue({
 			this.showToday();
 		});
 	},
-	watch: {},
+	watch: {
+	},
 	methods: {
 		render: function() {
 		},

@@ -8,6 +8,10 @@ use app\Common\Controller\AuthController;
 
 class IndexController extends AuthController
 {
+    // +----------------------------------------------------------------------
+    // | 视图区
+    // +----------------------------------------------------------------------
+
     /**
      * 后台首页视图
      * @return [type] [description]
@@ -16,13 +20,6 @@ class IndexController extends AuthController
         return $this->fetch();
     }
 
-    /**
-     * 空白页视图 & 范例
-     * @return [type] [description]
-     */
-    public function blank() {
-        return $this->fetch();
-    }
 
 }
 

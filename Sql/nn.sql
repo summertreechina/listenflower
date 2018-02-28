@@ -144,3 +144,21 @@ CREATE TABLE `nn_TRTomorrow` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='TR明日试题';
 
+
+/* 用户表 `TR公司信息表` */
+DROP TABLE IF EXISTS `nn_trcorp`;
+CREATE TABLE `nn_trcorp` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '公司id',
+  `corpname` varchar(60) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `nickname` varchar(60) NOT NULL DEFAULT '' COMMENT '公司昵称',
+  `address` varchar(60) NOT NULL DEFAULT '' COMMENT '地址',
+  `corpuser` varchar(60) NOT NULL DEFAULT '' COMMENT '企业联系人',
+  `contact` varchar(300) NOT NULL DEFAULT '' COMMENT '各种联系方式',
+  `other` varchar(900) NOT NULL DEFAULT '' COMMENT '其他信息',
+  `uppercorpid` tinyint(1) NOT NULL DEFAULT '0' COMMENT '上级单位的id',
+  `isactive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '企业状态',
+  `create_time` int(11) unsigned COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB auto_increment=1 DEFAULT CHARSET=utf8 COMMENT='TR公司信息表';
+
+
