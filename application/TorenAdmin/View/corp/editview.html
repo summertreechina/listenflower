@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="新增单位-同人消防" /}
+{include file='com/meta' title="编辑单位信息-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -99,7 +99,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>同人消防后台管理系统-新增单位</span>
+						<span>编辑单位信息-新增单位</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -111,41 +111,41 @@
 				<div class="row" style="padding: 3rem 0">
 					{/* 页面左侧表单 */ }
 					<div class="col-md-6">
-						<form class="form-horizontal" method="post" action="{:url('corp/add')}">
+						<form class="form-horizontal" method="post" action="{:url('corp/edit', ['id'=>$corpinfo['id']])}">
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司名称</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" v-model='corpname' name="corpname">
+							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" name="corpname" value="{$corpinfo['corpname']}">
 							  </div>
 							</div>
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司别名</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" v-model='nickname' name="nickname">
+							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" name="nickname" value="{$corpinfo['nickname']}">
 							  </div>
 							</div>
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>地&emsp;&emsp;址</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" v-model='address' name='address'>
+							    <input type="text" class="form-control" name='address' value="{$corpinfo['address']}">
 							  </div>
 							</div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联&nbsp;系&nbsp;&nbsp;人</label>
 						    <div class="col-sm-10">
-						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" v-model='corpuser' name='corpuser'>
+						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" name='corpuser' value="{$corpinfo['corpuser']}">
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联系方式</label>
 						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." v-model='contact' name='contact'></textarea>
+						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." name='contact'>{$corpinfo['contact']}</textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label">其他资料</label>
 						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" v-model='other' name='other'></textarea>
+						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'>{$corpinfo['other']}</textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
@@ -160,20 +160,20 @@
 						  </div>
 
 						  {/* 上级单位显示区域 */ }
-						  <div class="form-group animated fadeIn" v-show='hasupper==1'>
-						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>上级单位</label>
+						  <div class="form-group animated fadeIn">
+						    <label for="" class="col-sm-2 control-label">上级单位</label>
 						    <div class="col-sm-10">
 						      <input type="text" class="form-control" v-model='uppercorp' name='uppercorp'>
 						    </div>
 						  </div>
 						  <div class="form-group" v-if='hasupper==1'>
 						  	<div class="col-sm-offset-2 col-sm-10">
-						  		---
+						  		如果有上级单位在这里显示
 						  	</div>
 						  </div>
-						  <div class="form-group" v-if="isfull">
+						  <div class="form-group">
 						    <div class="col-sm-offset-2 col-sm-10">
-						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
+						      <button type="submit" class="btn btn-info">提交编辑的内容</button>
 						    </div>
 						  </div>
 						</form>

@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="新增单位-同人消防" /}
+{include file='com/meta' title="单位员工-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -88,6 +88,20 @@
 		display: none;
 		/*sweetalert*/
 	}
+	/* 本页面独有样式 */
+	table {
+		table-layout: fixed;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	table i {
+		margin: 0 .3rem;
+	}
 </style>
 </head>
 <body>
@@ -99,7 +113,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>同人消防后台管理系统-新增单位</span>
+						<span>单位员工-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -109,85 +123,46 @@
 					</div>
 				</div>
 				<div class="row" style="padding: 3rem 0">
-					{/* 页面左侧表单 */ }
-					<div class="col-md-6">
-						<form class="form-horizontal" method="post" action="{:url('corp/add')}">
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司名称</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" v-model='corpname' name="corpname">
-							  </div>
-							</div>
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司别名</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" v-model='nickname' name="nickname">
-							  </div>
-							</div>
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>地&emsp;&emsp;址</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" v-model='address' name='address'>
-							  </div>
-							</div>
-						  <div class="form-group">
-						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联&nbsp;系&nbsp;&nbsp;人</label>
-						    <div class="col-sm-10">
-						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" v-model='corpuser' name='corpuser'>
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联系方式</label>
-						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." v-model='contact' name='contact'></textarea>
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <label for="" class="col-sm-2 control-label">其他资料</label>
-						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" v-model='other' name='other'></textarea>
-						    </div>
-						  </div>
-						  <div class="form-group">
-						  	<div class="col-sm-offset-2 col-sm-10">
-						  		<label class="radio-inline">
-						  		  <input type="radio" name="upper" value="0" v-model="hasupper"> 无上级单位
-						  		</label>
-						  		<label class="radio-inline">
-						  		  <input type="radio" name="upper" value="1" v-model="hasupper"> 有上级单位
-						  		</label>
-						  	</div>
-						  </div>
+					{/* 居中设计单位信息 */ }
+					<div class="col-md-12">
+						{/* 员工列表-开始 */ }
 
-						  {/* 上级单位显示区域 */ }
-						  <div class="form-group animated fadeIn" v-show='hasupper==1'>
-						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>上级单位</label>
-						    <div class="col-sm-10">
-						      <input type="text" class="form-control" v-model='uppercorp' name='uppercorp'>
-						    </div>
-						  </div>
-						  <div class="form-group" v-if='hasupper==1'>
-						  	<div class="col-sm-offset-2 col-sm-10">
-						  		---
-						  	</div>
-						  </div>
-						  <div class="form-group" v-if="isfull">
-						    <div class="col-sm-offset-2 col-sm-10">
-						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
-						    </div>
-						  </div>
-						</form>
-					</div>
-
-					{/* 页面右侧辅助区 */ }
-					<div class="col-md-6">
-						<select multiple class="form-control" style="height: 33rem;" v-if='hasupper==1'>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th style="width: 70px;">编号</th>
+									<th style="width: 15%;">用户姓名</th>
+									<th style="width: 25%;">账号</th>
+									<th style="width: 25%;">唯一标识</th>
+									<th style="width: 100px;">状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+								{foreach $list as $vo}
+								<tr>
+									<th scope="row">{$vo.id}</th>
+									<td><a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blanck">{$vo.uname}</a></td>
+									<td>{$vo.mobile}</td>
+									<td>{$vo.idcard}</td>
+									<td>
+										{switch name="$vo.isActive" }
+											{case value="1" break="0或1"}正常{/case}
+											{case value="0"}在回收站{/case}
+										{/switch}
+									</td>
+									<td>
+										<a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blank"><i class="fa fa-edit"></i>编辑</a>
+										<a href="{:url('Corp/showacorp', ['id'=>$vo.corpid])}" target="_blank"><i class="fa fa-building"></i>公司</a>
+										<a href="{:url('User/togglestatus', ['status'=>$vo.isActive])}"><i class="fa fa-random"></i>状态</a>
+									</td>
+								</tr>
+								{/foreach}
+							</tbody>
+						</table>
+						{$list->render()}
+						{/* 员工列表-结束 */ }
 					</div>
 				</div>
 		</div>
@@ -214,32 +189,9 @@ var vm = new Vue({
 	data: {
 		today: '',
 		user: '',
-		corpname: '',
-		nickname: '',
-		address: '',
-		corpuser: '',
-		contact: '',
-		other: '',
-		hasupper: 0,
-		uppercorp: '',
-		submitShow: 1,
+
 	},
 	computed: {
-		isfull: function() {
-			if (this.corpname && this.address && this.corpuser && this.contact) {
-				if (!this.hasupper) {
-					return true;
-				} else {
-					if (this.uppercorp) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		}
 	},
 	filters: {},
 	mounted () {
@@ -328,8 +280,6 @@ var vm = new Vue({
 			});
 		},
 		msg: function() {},
-		timeLine: function() {
-		}
 	},
 });
 </script>

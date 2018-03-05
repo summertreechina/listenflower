@@ -92,11 +92,15 @@
 		display: none;
 		/*sweetalert*/
 	}
+/* 本页面独有样式 */
 	.area-block {
-		margin-bottom: 4rem;
+		margin-bottom: 3rem;
 	}
 	.area-block h4 {
-		margin-bottom: 2rem;
+		margin-bottom: 1.6rem;
+	}
+	.area-block .row {
+		margin-bottom: 1.5rem;
 	}
 	.area-block .btn {
 		border-radius: 3px;
@@ -141,7 +145,7 @@
 							<h4>单位管理</h4>
 							<div class="row">
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有单位</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Corp/index')}" role="button" target="_blank">所有单位</a>
 								</div>
 								<div class="col-md-3">
 									<a class="btn btn-default btn-lg btn-block" href="{:url('Corp/addView')}" role="button" target="_blank">新增单位</a>
@@ -150,7 +154,7 @@
 									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">link</a>
 								</div>
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">回收站</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Corp/trashview')}" role="button" target="_blank">单位回收站</a>
 								</div>
 							</div>
 						</div>
@@ -159,16 +163,16 @@
 							<h4>会员管理</h4>
 							<div class="row">
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有会员</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('User/index')}" role="button" target="_blank">所有会员</a>
 								</div>
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">新增会员</a>
-								</div>
-								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">Link</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('User/addView')}" role="button" target="_blank">新增会员</a>
 								</div>
 								<div class="col-md-3">
 									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">Link</a>
+								</div>
+								<div class="col-md-3">
+									<a class="btn btn-default btn-lg btn-block" href="{:url('User/trashview')}" role="button" target="_blank">会员回收站</a>
 								</div>
 							</div>
 						</div>
@@ -177,16 +181,29 @@
 							<h4>试题管理</h4>
 							<div class="row">
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">新增试题</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Ques/index')}" role="button" target="_blank">所有试题</a>
 								</div>
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">所有试题</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Ques/index')}" role="button" target="_blank">新增试题</a>
 								</div>
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">提交明日试题</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Ques/index')}" role="button" target="_blank">生成明日试题</a>
 								</div>
 								<div class="col-md-3">
-									<a class="btn btn-default btn-lg btn-block" href="#" role="button" target="_blank">查看明日试题</a>
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Ques/index')}" role="button" target="_blank">查看明日试题</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<a class="btn btn-default btn-lg btn-block" href="{:url('Ques/upload')}" role="button" target="_blank">用户上传的试题</a>
+								</div>
+							</div>
+						</div>
+						<div class="area-block">
+							<h4>其他事物</h4>
+							<div class="row">
+								<div class="col-md-3">
+									<a class="btn btn-default btn-lg btn-block" href="{:url('other/msg')}" role="button" target="_blank">用户反馈的意见</a>
 								</div>
 							</div>
 						</div>

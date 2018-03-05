@@ -5,33 +5,47 @@ use think\Controller;
 use app\Common\Controller\AuthController;
 
 /**
-* 后台公司管理控制器
+* 后台用户管理控制器
 */
-class CorpController extends AuthController
+class UserController extends AuthController
 {
 	
 	/**
-	 * 公司列表页视图
+	 * 用户列表页视图
 	 * @return [type] [description]
 	 */
 	public function index() {
-		$list = Db::name('trcorp')->where('isactive', 1)->paginate(4);
-
+		$list = Db::name('truser')->paginate(4);
 		$this->assign([
-			'corplist' => $list,
+			'list' => $list,
 		]);
 		return $this->fetch();
 	}
 
 	/**
-	 * 新增公司页视图
+	 * 显示一个公司的用户
+	 * $cid corp公司的id
+	 * @return [type] [description]
+	 */
+	public function corpuser($id) {
+		$id = intval($id);
+		
+		$list = Db::name('truser')->where('corpid', $id)->paginate(1);
+		$this->assign([
+			'list' => $list,
+		]);
+		return $this->fetch();
+	}
+
+	/**
+	 * 新增用户视图
 	 */
 	public function addView() {
 		return $this->fetch();
 	}
 
 	/**
-	 * 新增公司方法
+	 * 新增用户方法
 	 */
 	public function add() {
 		$data = input('param.', '','strip_tags');
@@ -64,11 +78,11 @@ class CorpController extends AuthController
 	}
 
 	/**
-	 * 显示一家公司的信息
+	 * 显示一位用户的详细信息
 	 * @param  integer $id [description]
 	 * @return [type]      [description]
 	 */
-	public function showacorp($id = 1) {
+	public function showauser($id = 1) {
 		$id = intval($id);
 		$info = Db::name('trcorp')->find($id);
 		$this->assign([
@@ -78,7 +92,7 @@ class CorpController extends AuthController
 	}
 
 	/**
-	 * 编辑一家公司信息的视图
+	 * 编辑用户信息的视图
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
@@ -118,48 +132,74 @@ class CorpController extends AuthController
 		}
 	}
 
-	public function corplist() {
-		$corplist = Db::name('trcorp')->where('isactive', 1)->select();
-		return $corplist;
+	public function userlist() {
+		$list = Db::name('trcorp')->where('isactive', 1)->select();
+		return $list;
 	}
 
 	/**
-	 * 将单位放入回收站
+	 * 切换用户状态
+	 * @param  [type] $status [0或1]
+	 * @return [type]         [切换结果]
+	 */
+	public function togglestatus($status, $uid) {
+		// echo $status;die;
+		// echo $uid;die;
+		if (!$status) {
+			# 如果是0 就激活
+			$this->outtrash($uid);
+		} else {
+			# 如果是1 就放入回收站
+			$this->intrash($uid);
+		}
+		
+	}
+
+	/**
+	 * 将用户放入回收站
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function intrash($id) {
+	private function intrash($id) {
 		$id = intval($id);
-		$r = Db::name('trcorp')->where('id', $id)->update(['isactive' => 0]);
+		$r = Db::name('truser')->where('id', $id)->update(['isActive' => 0]);
 		if (!$r) {
-			$this->error('将该单位放入回收站的操作失败，请联系管理员');
+			$this->error('将该会员放入回收站的操作失败，请联系管理员');
 		} else {
-			$this->success('操作成功，您可以从回收站内找到该单位', url('corp/index'));
+			$this->success('操作成功，您可以从回收站内找到该会员', url('user/index'));
 		}
 	}
 
 	/**
-	 * 将单位从回收站中取出
+	 * 将用户从回收站中取出
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function outtrash($id) {
+	private function outtrash($id) {
 		$id = intval($id);
-		$r = Db::name('trcorp')->where('id', $id)->update(['isactive' => 1]);
+		$r = Db::name('truser')->where('id', $id)->update(['isActive' => 1]);
 		if (!$r) {
-			$this->error('将该单位从回收站取出的操作失败，请联系管理员');
+			$this->error('将该会员从回收站取出的操作失败，请联系管理员');
 		} else {
-			$this->success('操作成功，该单位已从回收站取出');
+			$this->success('操作成功，该会员已从回收站取出');
 		}
 	}
 
+	/**
+	 * 回收站里用户列表
+	 * @return [type] [description]
+	 */
 	public function trashlist() {
-		$r = Db::name('trcorp')->where('isactive', 0)->select();
+		$r = Db::name('truser')->where('isactive', 0)->select();
 		return $r;
 	}
 
+	/**
+	 * 
+	 * @return [type] [description]
+	 */
 	public function trashview() {
-		$list = Db::name('trcorp')->where('isactive', 0)->paginate(4);
+		$list = Db::name('truser')->where('isactive', 0)->paginate(2);
 		$this->assign([
 			'list' => $list,
 		]);

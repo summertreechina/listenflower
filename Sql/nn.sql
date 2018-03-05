@@ -109,22 +109,23 @@ CREATE TABLE `nn_ans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='答案表';
 
 /* 用户表 `TR用户表` */
-DROP TABLE IF EXISTS `nn_TRUser`;
-CREATE TABLE `nn_TRUser` (
+DROP TABLE IF EXISTS `nn_truser`;
+CREATE TABLE `nn_truser` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `uname` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `corpid` int(11) NOT NULL DEFAULT '0' COMMENT '单位的id',
   `ec_salt` varchar(10) DEFAULT NULL COMMENT '秘钥',
   `isActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态',
-  `updated_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-  `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB auto_increment=1 DEFAULT CHARSET=utf8 COMMENT='TR用户表';
 
 /* TR用户成绩表 `nn_TRUserScore` */
-DROP TABLE IF EXISTS `nn_TRUserScore`;
-CREATE TABLE `nn_TRUserScore` (
+DROP TABLE IF EXISTS `nn_truserScore`;
+CREATE TABLE `nn_truserScore` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '成绩id',
   `score` int(4) unsigned NOT NULL DEFAULT '0' COMMENT '成绩',
   `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
@@ -155,9 +156,10 @@ CREATE TABLE `nn_trcorp` (
   `corpuser` varchar(60) NOT NULL DEFAULT '' COMMENT '企业联系人',
   `contact` varchar(300) NOT NULL DEFAULT '' COMMENT '各种联系方式',
   `other` varchar(900) NOT NULL DEFAULT '' COMMENT '其他信息',
-  `uppercorpid` tinyint(1) NOT NULL DEFAULT '0' COMMENT '上级单位的id',
+  `uppercorpid` int(11) NOT NULL DEFAULT '0' COMMENT '上级单位的id',
   `isactive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '企业状态',
   `create_time` int(11) unsigned COMMENT '创建时间',
+  `update_time` int(11) unsigned COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB auto_increment=1 DEFAULT CHARSET=utf8 COMMENT='TR公司信息表';
 

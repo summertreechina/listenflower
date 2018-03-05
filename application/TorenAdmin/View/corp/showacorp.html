@@ -88,6 +88,19 @@
 		display: none;
 		/*sweetalert*/
 	}
+	/* 本页面独有样式 */
+	.row.content {
+		border-bottom: 1px solid #aa9;
+		margin-top: 1rem;
+
+	}
+	.row.content .col-sm-9 {
+		font-size: 1.6rem;
+		font-weight: 500;
+	}
+	.row.contr {
+		margin-top: 3rem;
+	}
 </style>
 </head>
 <body>
@@ -111,22 +124,65 @@
 				<div class="row" style="padding: 3rem 0">
 					{/* 居中设计单位信息 */ }
 					<div class="col-md-6 col-md-offset-3">
-						<div class="row">
-							<div class="col-sm-2">公司名称</div>
-							<div class="col-sm-10">
-							青岛三海食品有限公司
+						{/* 公司详细信息页-开始 */ }
+						<div class="row content">
+							<div class="col-sm-3">公司名称</div>
+							<div class="col-sm-9">
+							{$corpinfo['corpname']}
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-2">公司地址</div>
-							<div class="col-sm-10">
-							青岛四方区
+						<div class="row content">
+							<div class="col-sm-3">公司别名</div>
+							<div class="col-sm-9">
+							{$corpinfo['nickname']}
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-2">联系人</div>
-							<div class="col-sm-10">
-							马大哈
+						<div class="row content">
+							<div class="col-sm-3">公司地址</div>
+							<div class="col-sm-9">
+							{$corpinfo['address']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">主要联系人</div>
+							<div class="col-sm-9">
+							{$corpinfo['corpuser']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">常用联系方式</div>
+							<div class="col-sm-9">
+							{$corpinfo['contact']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">其他资料</div>
+							<div class="col-sm-9">
+							{$corpinfo['other']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">上级单位</div>
+							<div class="col-sm-9">
+							{$corpinfo['uppercorpid']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">录入时间</div>
+							<div class="col-sm-9">
+							{$corpinfo['create_time'] |date="Y-m-d",###}
+							</div>
+						</div>
+						{/* 公司详细信息页-结束 */ }
+						<div class="row contr">
+							<div class="col-md-4">
+								<a type="button" class="btn btn-warning btn-block" href="{:url('corp/editview', ['id'=>$corpinfo['id']])}">修改</a>
+							</div>
+							<div class="col-md-4">
+								<a type="button" class="btn btn-info btn-block" href="{:url('corp/softdel', ['id'=>$corpinfo['id']])}">放入回收站</a>
+							</div>
+							<div class="col-md-4">
+								<a type="button" class="btn btn-default btn-block" disabled="disabled">&nbsp;</a>
 							</div>
 						</div>
 					</div>
@@ -269,8 +325,6 @@ var vm = new Vue({
 			});
 		},
 		msg: function() {},
-		timeLine: function() {
-		}
 	},
 });
 </script>
