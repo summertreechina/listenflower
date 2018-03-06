@@ -153,7 +153,7 @@
 										{/switch}
 									</td>
 									<td>
-										<a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blank"><i class="fa fa-edit"></i>编辑</a>
+										<a href="{:url('User/editview', ['id'=>$vo.id])}" target="_blank"><i class="fa fa-edit"></i>编辑</a>
 										<a href="{:url('Corp/showacorp', ['id'=>$vo.corpid])}" target="_blank"><i class="fa fa-building"></i>公司</a>
 										<a href="{:url('User/togglestatus', ['status'=>$vo.isActive, 'uid'=>$vo.id])}"><i class="fa fa-random"></i>状态</a>
 									</td>

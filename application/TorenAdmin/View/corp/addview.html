@@ -99,7 +99,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>同人消防后台管理系统-新增单位</span>
+						<span>新增单位-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -111,41 +111,41 @@
 				<div class="row" style="padding: 3rem 0">
 					{/* 页面左侧表单 */ }
 					<div class="col-md-6">
-						<form class="form-horizontal" method="post" action="{:url('corp/add')}">
+						<form class="form-horizontal" autocomplete="off" method="post" action="{:url('corp/add')}">
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司名称</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" v-model='corpname' name="corpname">
+							    <input type="text" class="form-control" placeholder="要严谨，营业执照上的名称" name="corpname">
 							  </div>
 							</div>
 							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司别名</label>
+							  <label for="" class="col-sm-2 control-label">公司别名</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" v-model='nickname' name="nickname">
+							    <input type="text" class="form-control" placeholder="有时大家叫的名字跟执照上不一样。有就填" name="nickname">
 							  </div>
 							</div>
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>地&emsp;&emsp;址</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" v-model='address' name='address'>
+							    <input type="text" class="form-control" name='address'>
 							  </div>
 							</div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联&nbsp;系&nbsp;&nbsp;人</label>
 						    <div class="col-sm-10">
-						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" v-model='corpuser' name='corpuser'>
+						      <input type="text" class="form-control" placeholder="姓名、职务、电话等" name='corpuser'>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>联系方式</label>
 						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." v-model='contact' name='contact'></textarea>
+						      <textarea class="form-control" rows="2" placeholder="手机、固话、邮箱..." name='contact'></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label">其他资料</label>
 						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" v-model='other' name='other'></textarea>
+						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
@@ -164,15 +164,13 @@
 						  <div class="form-group animated fadeIn" v-show='hasupper==1'>
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>上级单位</label>
 						    <div class="col-sm-10">
-						      <input type="text" class="form-control" v-model='uppercorp' name='uppercorp'>
+						      <input type="text" class="form-control" placeholder="请从右侧选择上级单位" v-model='uppername' name='uppername' disabled>
+						      <input type="text" class="form-control" v-model='upperid' name='upperid'>
 						    </div>
 						  </div>
-						  <div class="form-group" v-if='hasupper==1'>
-						  	<div class="col-sm-offset-2 col-sm-10">
-						  		---
-						  	</div>
-						  </div>
-						  <div class="form-group" v-if="isfull">
+					  	{/* 上级单位显示区域结束 */ }
+
+						  <div class="form-group">
 						    <div class="col-sm-offset-2 col-sm-10">
 						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
 						    </div>
@@ -182,14 +180,17 @@
 
 					{/* 页面右侧辅助区 */ }
 					<div class="col-md-6">
-						<select multiple class="form-control" style="height: 33rem;" v-if='hasupper==1'>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
+						<div>
+							<input type="text" class="form-control" placeholder="输入关键字以搜索单位" name='' style="width:80%;display: inline-block" v-model='keyword'>
+							<a class="btn btn-default" role="button" style="width:20%;float:right;" v-on:click='searchcorp'>搜索</a>
+						</div>
+						<select multiple class="form-control" style="height: 29.3rem;" v-model="selected">
+
+							<option v-for="item in corplist" v-bind:value="item.id">{{item.corpname}}</option>
+
 						</select>
 					</div>
+					{/* 页面右侧辅助区结束 */ }
 				</div>
 		</div>
 	</main>
@@ -209,38 +210,31 @@ const URL = {
 	getUser: `{:url('Toren/Index/isLogin')}`,
 	logoutUrl: `{:url('Toren/Index/logout')}`,
 	saveScoreUrl: `{:url('Index/saveScore')}`,
+	corplistUrl: `{:url('Corp/ajax_corplist')}`,
 }
 var vm = new Vue({
 	el: "#app",
 	data: {
 		today: '',
 		user: '',
-		corpname: '',
-		nickname: '',
-		address: '',
-		corpuser: '',
-		contact: '',
-		other: '',
+		// corpname: '',
+		// nickname: '',
+		// address: '',
+		// corpuser: '',
+		// contact: '',
+		// other: '',
 		hasupper: 0,
-		uppercorp: '',
-		submitShow: 1,
+		// uppercorp: '',
+		uppername: '',
+		// upperid: '',
+		selected: [],
+		keyword: '',
+		corplist: [],
 	},
 	computed: {
-		isfull: function() {
-			if (this.corpname && this.address && this.corpuser && this.contact) {
-				if (!this.hasupper) {
-					return true;
-				} else {
-					if (this.uppercorp) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		}
+		upperid: function () {
+			return this.selected[0];
+		},
 	},
 	filters: {},
 	mounted () {
@@ -250,6 +244,14 @@ var vm = new Vue({
 		});
 	},
 	watch: {
+		upperid: function() {
+			for(let i in this.corplist) {
+				if (this.corplist[i].id == this.upperid) {
+					console.log(this.corplist[i].id);
+					this.uppername = this.corplist[i].corpname;
+				}
+			}
+		}
 	},
 	methods: {
 		render: function() {
@@ -330,7 +332,19 @@ var vm = new Vue({
 		},
 		msg: function() {},
 		timeLine: function() {
-		}
+		},
+		searchcorp: function() {
+			axios.get(URL.corplistUrl, {
+				params: {
+					'name': this.keyword
+				}
+			}).then((r)=>{
+				if (r.data) {
+					this.corplist = r.data;
+				} else {
+				}
+			});
+		},
 	},
 });
 </script>

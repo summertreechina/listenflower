@@ -98,9 +98,10 @@ class UserController extends AuthController
 	 */
 	public function editview($id) {
 		$id = intval($id);
-		$info = Db::name('trcorp')->find($id);
+		$info = Db::name('truser')->find($id);
+		print_r($info);
 		$this->assign([
-			'corpinfo' => $info,
+			'userinfo' => $info,
 		]);
 		return $this->fetch();
 	}

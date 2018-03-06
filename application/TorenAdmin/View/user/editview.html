@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="新增会员-同人消防" /}
+{include file='com/meta' title="编辑会员信息-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -101,7 +101,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>新增会员-同人消防</span>
+						<span>编辑会员信息-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -114,17 +114,17 @@
 
 					{/* 页面左侧表单 */ }
 					<div class="col-md-6">
-						<form class="form-horizontal" method="post" action="{:url('user/add')}">
+						<form class="form-horizontal" method="post" action="{:url('user/edit')}">
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>姓名</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="" name="name">
+							    <input type="text" class="form-control" placeholder="" name="name" value="{$userinfo['uname']}">
 							  </div>
 							</div>
 							<div class="form-group">
 							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>手机</label>
 							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="因手机号的唯一性，也作为本网站的账号" name="umobile">
+							    <input type="text" class="form-control" placeholder="因手机号的唯一性，也作为本网站的账号" name="umobile" value="{$userinfo['mobile']}">
 							  </div>
 							</div>
 							<div class="form-group">
@@ -137,7 +137,7 @@
 							<div class="form-group">
 								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司id</label>
 								<div class="col-sm-10">
-									<input type="number" class="form-control" placeholder="" name='corpid' v-bind:value='selected'>
+									<input type="number" class="form-control" placeholder="" name='corpid' v-bind:value='selected' value="{$userinfo['corpid']}">
 								</div>
 							</div>
 
@@ -145,26 +145,26 @@
 								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>角色</label>
 								<div class="col-sm-10">
 									<label class="radio-inline">
-									  <input type="radio" name="urole" value="监控室员工" v-model='role'> 监控室员工
+									  <input type="radio" name="urole" value="监控室员工" checked> 监控室员工
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="urole" value="公司管理员" v-model='role'> 公司管理员
+									  <input type="radio" name="urole" value="公司管理员" > 公司管理员
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="urole" value="同人员工" v-model='role'> 同人员工
+									  <input type="radio" name="urole" value="同人员工"> 同人员工
 									</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="" class="col-sm-2 control-label">身份证<br>号码</label>
 								<div class="col-sm-10">
-									<input type="number" class="form-control" placeholder="选填。因终身的唯一性，学习内容和成绩可以终身跟随。" name='idcard'>
+									<input type="number" class="form-control" placeholder="选填。因终身的唯一性，学习内容和成绩可以终身跟随。" name='idcard' value="{$userinfo['idcard']}">
 								</div>
 							</div>
 						  <div class="form-group">
 						    <label for="" class="col-sm-2 control-label">其他资料</label>
 						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'></textarea>
+						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'>{$userinfo['other']}</textarea>
 						    </div>
 						  </div>
 
@@ -219,7 +219,6 @@ var vm = new Vue({
 		name: '',
 		corplist: [],
 		selected: [],
-		role: '',
 	},
 	computed: {
 	},
