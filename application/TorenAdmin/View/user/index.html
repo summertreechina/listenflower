@@ -143,7 +143,7 @@
 								{foreach $list as $vo}
 								<tr>
 									<th scope="row">{$vo.id}</th>
-									<td><a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blanck">{$vo.uname}</a></td>
+									<td><a href="{:url('User/showauser', ['id'=>$vo.id])}" target="_blanck">{$vo.uname}</a></td>
 									<td>{$vo.mobile}</td>
 									<td>{$vo.idcard}</td>
 									<td>

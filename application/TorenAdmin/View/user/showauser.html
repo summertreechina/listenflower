@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="新增会员-同人消防" /}
+{include file='com/meta' title="用户详情-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -89,7 +89,18 @@
 		/*sweetalert*/
 	}
 	/* 本页面独有样式 */
+	.row.content {
+		border-bottom: 1px solid #aa9;
+		margin-top: 1rem;
 
+	}
+	.row.content .col-sm-9 {
+		font-size: 1.6rem;
+		font-weight: 500;
+	}
+	.row.contr {
+		margin-top: 3rem;
+	}
 </style>
 </head>
 <body>
@@ -101,7 +112,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>新增会员-同人消防</span>
+						<span>用户详情-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -111,85 +122,70 @@
 					</div>
 				</div>
 				<div class="row" style="padding: 3rem 0">
-
-					{/* 页面左侧表单 */ }
-					<div class="col-md-6">
-						<form class="form-horizontal" method="post" action="{:url('user/add')}">
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>姓名</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="" name="name">
-							  </div>
+					{/* 居中设计用户信息 */ }
+					<div class="col-md-6 col-md-offset-3">
+						{/* 用户详细信息页-开始 */ }
+						<div class="row content">
+							<div class="col-sm-3">姓名</div>
+							<div class="col-sm-9">
+							{$userinfo['uname']}
 							</div>
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>手机</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" placeholder="因手机号的唯一性，也作为本网站的账号" name="umobile">
-							  </div>
-							</div>
-							<div class="form-group">
-							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>密码</label>
-							  <div class="col-sm-10">
-							    <input type="text" class="form-control" name='upwd'>
-							  </div>
-							</div>
-
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司id</label>
-								<div class="col-sm-10">
-									<input type="nubmer" class="form-control" placeholder="" name='corpid' v-bind:value='selected'>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>角色</label>
-								<div class="col-sm-10">
-									<label class="radio-inline">
-									  <input type="radio" name="urole" value="监控室员工" v-model='role'> 监控室员工
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" name="urole" value="公司管理员" v-model='role'> 公司管理员
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" name="urole" value="同人员工" v-model='role'> 同人员工
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label">身份证<br>号码</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" placeholder="选填。因终身的唯一性，学习内容和成绩可以终身跟随。" name='idcard'>
-								</div>
-							</div>
-						  <div class="form-group">
-						    <label for="" class="col-sm-2 control-label">其他资料</label>
-						    <div class="col-sm-10">
-						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'></textarea>
-						    </div>
-						  </div>
-
-						  <div class="form-group">
-						    <div class="col-sm-offset-2 col-sm-10">
-						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
-						    </div>
-						  </div>
-						</form>
-					</div>
-					{/* 页面左侧表单结束 */ }
-
-					{/* 页面右侧辅助区 */ }
-					<div class="col-md-6">
-						<div>
-							<input type="text" class="form-control" placeholder="输入关键字以搜索单位" name='' style="width:80%;display: inline-block" v-model='name'>
-							<a class="btn btn-default" role="button" style="width:20%;float:right;" v-on:click='searchcorp'>搜索</a>
 						</div>
-						<select multiple class="form-control" style="height: 29.3rem;" v-model="selected">
-							<option value="0">无单位人员</option>
-
-							<option v-for="item in corplist" v-bind:value="item.id">{{item.corpname}}</option>
-						</select>
+						<div class="row content">
+							<div class="col-sm-3">账户(手机号)</div>
+							<div class="col-sm-9">
+							{$userinfo['mobile']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">所属公司</div>
+							<div class="col-sm-9">
+							<a href="{:url('Corp/showacorp', ['id'=>$userinfo['corpid']])}" target="_black"> {$userinfo['corpid']}</a>
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">角色</div>
+							<div class="col-sm-9">
+							{$userinfo['role']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">状态</div>
+							<div class="col-sm-9">
+							{$userinfo['isActive']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">身份证号</div>
+							<div class="col-sm-9">
+							{$userinfo['idcard']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">其他事项</div>
+							<div class="col-sm-9">
+							{$userinfo['other']}
+							</div>
+						</div>
+						<div class="row content">
+							<div class="col-sm-3">录入时间</div>
+							<div class="col-sm-9">
+							{$userinfo['create_time']}
+							</div>
+						</div>
+						{/* 公司详细信息页-结束 */ }
+						<div class="row contr">
+							<div class="col-md-4">
+								<a type="button" class="btn btn-warning btn-block" href="{:url('User/editview', ['id'=>$userinfo['id']])}">修改</a>
+							</div>
+							<div class="col-md-4">
+								<a type="button" class="btn btn-info btn-block" href="{:url('User/softdel', ['id'=>$userinfo['id']])}">放入回收站</a>
+							</div>
+							<div class="col-md-4">
+								<a type="button" class="btn btn-default btn-block" disabled="disabled">&nbsp;</a>
+							</div>
+						</div>
 					</div>
-					{/* 页面右侧辅助区结束 */ }
 				</div>
 		</div>
 	</main>
@@ -209,19 +205,38 @@ const URL = {
 	getUser: `{:url('Toren/Index/isLogin')}`,
 	logoutUrl: `{:url('Toren/Index/logout')}`,
 	saveScoreUrl: `{:url('Index/saveScore')}`,
-	corplistUrl: `{:url('Corp/ajax_corplist')}`,
 }
 var vm = new Vue({
 	el: "#app",
 	data: {
 		today: '',
 		user: '',
-		name: '',
-		corplist: [],
-		selected: [],
-		role: '',
+		corpname: '',
+		nickname: '',
+		address: '',
+		corpuser: '',
+		contact: '',
+		other: '',
+		hasupper: 0,
+		uppercorp: '',
+		submitShow: 1,
 	},
 	computed: {
+		isfull: function() {
+			if (this.corpname && this.address && this.corpuser && this.contact) {
+				if (!this.hasupper) {
+					return true;
+				} else {
+					if (this.uppercorp) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		}
 	},
 	filters: {},
 	mounted () {
@@ -310,22 +325,6 @@ var vm = new Vue({
 			});
 		},
 		msg: function() {},
-		timeLine: function() {
-		},
-		searchcorp: function() {
-			axios.get(URL.corplistUrl, {
-				params: {
-					'name': this.name
-				}
-			}).then((r)=>{
-				if (r.data) {
-					this.corplist = r.data;
-					// this.rendercroplist();
-				} else {
-
-				}
-			});
-		},
 	},
 });
 </script>

@@ -63,7 +63,7 @@ class UserController extends AuthController
 		// 检测该单位是否已经存在
 		$isexist = Db::name('truser')->where('mobile', $userinfo['mobile'])->find();
 		if ($isexist) {
-			$this->error('提交的单位已经存在，请检查录入信息');
+			$this->error('新增的用户已经存在，请检查录入信息');
 		}
 
 		// db('user')->insert($data); 助手函数
@@ -84,9 +84,9 @@ class UserController extends AuthController
 	 */
 	public function showauser($id = 1) {
 		$id = intval($id);
-		$info = Db::name('trcorp')->find($id);
+		$info = Db::name('truser')->find($id);
 		$this->assign([
-			'corpinfo' => $info,
+			'userinfo' => $info,
 		]);
 		return $this->fetch();
 	}

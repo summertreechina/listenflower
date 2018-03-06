@@ -128,11 +128,19 @@ class CorpController extends AuthController
 		$corplist = Db::name('trcorp')->where('isactive', 1)->select();
 		return $corplist;
 	}
-
+	/**
+	 * 根据关键字搜索单位
+	 * @return [type] [description]
+	 */
 	public function ajax_corplist() {
-		$text = input('param.name', '','strip_tags');
-		return json($text);
-		$corplist = Db::name('trcorp')->where('isactive', 1)->select();
+		$keyword = input('param.name', '','strip_tags');
+		if ($keyword) {
+			$where = 'corpname LIKE "%'.$keyword.'%"';
+			// return json($where);
+			$corplist = Db::name('trcorp')->where($where)->select();
+			return json($corplist);
+		}
+
 	}
 
 	/**
