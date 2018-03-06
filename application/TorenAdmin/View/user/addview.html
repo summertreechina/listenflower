@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="会员回收站-同人消防" /}
+{include file='com/meta' title="新增会员-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -89,19 +89,7 @@
 		/*sweetalert*/
 	}
 	/* 本页面独有样式 */
-	table {
-		table-layout: fixed;
-		border-collapse: collapse;
-		width: 100%;
-	}
-	td {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	table i {
-		margin: 0 .3rem;
-	}
+
 </style>
 </head>
 <body>
@@ -113,7 +101,7 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>会员回收站-同人消防</span>
+						<span>新增会员-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
@@ -123,47 +111,86 @@
 					</div>
 				</div>
 				<div class="row" style="padding: 3rem 0">
-					{/* 居中设计单位信息 */ }
-					<div class="col-md-12">
-						{/* 员工列表-开始 */ }
 
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th style="width: 70px;">编号</th>
-									<th style="width: 15%;">用户姓名</th>
-									<th style="width: 25%;">账号</th>
-									<th style="width: 25%;">唯一标识</th>
-									<th style="width: 100px;">状态</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								
-								{foreach $list as $vo}
-								<tr>
-									<th scope="row">{$vo.id}</th>
-									<td><a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blanck">{$vo.uname}</a></td>
-									<td>{$vo.mobile}</td>
-									<td>{$vo.idcard}</td>
-									<td>
-										{switch name="$vo.isActive" }
-											{case value="1" break="0或1"}正常{/case}
-											{case value="0"}在回收站{/case}
-										{/switch}
-									</td>
-									<td>
-										<a href="{:url('User/userinfo', ['id'=>$vo.id])}" target="_blank"><i class="fa fa-edit"></i>编辑</a>
-										<a href="{:url('Corp/showacorp', ['id'=>$vo.corpid])}" target="_blank"><i class="fa fa-building"></i>公司</a>
-										<a href="{:url('User/togglestatus', ['status'=>$vo.isActive, 'uid'=>$vo.id])}"><i class="fa fa-random"></i>状态</a>
-									</td>
-								</tr>
-								{/foreach}
-							</tbody>
-						</table>
-						{$list->render()}
-						{/* 员工列表-结束 */ }
+					{/* 页面左侧表单 */ }
+					<div class="col-md-6">
+						<form class="form-horizontal" method="post" action="{:url('user/add')}">
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>姓名</label>
+							  <div class="col-sm-10">
+							    <input type="text" class="form-control" placeholder="" name="name">
+							  </div>
+							</div>
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>手机</label>
+							  <div class="col-sm-10">
+							    <input type="text" class="form-control" placeholder="因手机号的唯一性，也作为本网站的账号" name="umobile">
+							  </div>
+							</div>
+							<div class="form-group">
+							  <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>密码</label>
+							  <div class="col-sm-10">
+							    <input type="" class="form-control" name='upwd'>
+							  </div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>公司</label>
+								<div class="col-sm-10">
+									<div style="padding-top:7px;border-bottom: 1px solid #997;">请从右侧选择该人员的单位</div>
+									<!-- <input id="corpid" type="text" class="form-control" placeholder="输入公司名称以搜索"  v-model.lazy="corpname" name='corpid' value="" > -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>角色</label>
+								<div class="col-sm-10">
+									<label class="radio-inline">
+									  <input type="radio" name="urole" value="监控室员工"> 监控室员工
+									</label>
+									<label class="radio-inline">
+									  <input type="radio" name="urole" value="公司管理员"> 公司管理员
+									</label>
+									<label class="radio-inline">
+									  <input type="radio" name="urole" value="同人员工"> 同人员工
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label">身份证<br>号码</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" placeholder="选填。因终身的唯一性，学习内容和成绩可以终身跟随。" name='idcard'>
+								</div>
+							</div>
+						  <div class="form-group">
+						    <label for="" class="col-sm-2 control-label">其他资料</label>
+						    <div class="col-sm-10">
+						      <textarea class="form-control" rows="4" placeholder="根据需要自行决定填写内容" name='other'></textarea>
+						    </div>
+						  </div>
+
+						  <div class="form-group">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button type="submit" class="btn btn-info">检查确认无误后提交</button>
+						    </div>
+						  </div>
+						</form>
 					</div>
+					{/* 页面左侧表单结束 */ }
+
+					{/* 页面右侧辅助区 */ }
+					<div class="col-md-6">
+						<div>
+							<input type="text" class="form-control" placeholder="搜索已经录入的单位" name='' style="width:80%;display: inline-block" v-model='name'>
+							<a class="btn btn-default" role="button" style="width:20%;float:right;" v-on:click='searchcorp'>搜索</a>
+						</div>
+						<select multiple class="form-control" style="height: 29.3rem;">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</div>
+					{/* 页面右侧辅助区结束 */ }
 				</div>
 		</div>
 	</main>
@@ -183,13 +210,14 @@ const URL = {
 	getUser: `{:url('Toren/Index/isLogin')}`,
 	logoutUrl: `{:url('Toren/Index/logout')}`,
 	saveScoreUrl: `{:url('Index/saveScore')}`,
+	corplistUrl: `{:url('Corp/ajax_corplist')}`,
 }
 var vm = new Vue({
 	el: "#app",
 	data: {
 		today: '',
 		user: '',
-
+		name: '',
 	},
 	computed: {
 	},
@@ -280,6 +308,23 @@ var vm = new Vue({
 			});
 		},
 		msg: function() {},
+		timeLine: function() {
+		},
+		searchcorp: function() {
+			axios.get(URL.corplistUrl, {
+				params: {
+					'name': this.name
+				}
+			}).then((r)=>{
+				if (r.data) {
+					console.log(r.data);
+
+				} else {
+
+				}
+			});
+
+		},
 	},
 });
 </script>

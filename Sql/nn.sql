@@ -116,10 +116,12 @@ CREATE TABLE `nn_truser` (
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
   `corpid` int(11) NOT NULL DEFAULT '0' COMMENT '单位的id',
+  `idcard` bigint(20) DEFAULT '' COMMENT '身份证号码',
+  `role` varchar(30) DEFAULT '' COMMENT '会员角色',
   `ec_salt` varchar(10) DEFAULT NULL COMMENT '秘钥',
   `isActive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` timestamp DEFAULT '' COMMENT '更新时间',
+  `create_time` timestamp DEFAULT '' COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB auto_increment=1 DEFAULT CHARSET=utf8 COMMENT='TR用户表';
 

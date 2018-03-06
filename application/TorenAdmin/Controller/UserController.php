@@ -49,28 +49,28 @@ class UserController extends AuthController
 	 */
 	public function add() {
 		$data = input('param.', '','strip_tags');
-			// print_r($data);
-		$corpinfo = [
-			'corpname' => $data['corpname'],
-			'nickname' => $data['nickname'],
-			'address' => $data['address'],
-			'corpuser' => $data['corpuser'],
-			'contact' => $data['contact'],
+			// print_r($data);die;
+		$userinfo = [
+			'uname' => $data['name'],
+			'mobile' => $data['umobile'],
+			'password' => $data['upwd'],
+			'corpid' => $data['corpid'],
+			'role' => $data['urole'],
+			'idcard' => $data['idcard'],
 			'other' => $data['other'],
-			'uppercorpid' => $data['uppercorp'],
 			'create_time' => time(),
 		];
 		// 检测该单位是否已经存在
-		$isexist = Db::name('trcorp')->where('corpname', $corpinfo['corpname'])->find();
+		$isexist = Db::name('truser')->where('mobile', $userinfo['mobile'])->find();
 		if ($isexist) {
 			$this->error('提交的单位已经存在，请检查录入信息');
 		}
 
 		// db('user')->insert($data); 助手函数
-		$cropid = Db::name('trcorp')->insertGetId($corpinfo);
-		if ($cropid) {
+		$uid = Db::name('truser')->insertGetId($userinfo);
+		if ($uid) {
 			// 显示该条数据的效果 
-			$this->success('新增成功', url('corp/showacorp', ['id'=>$cropid]));
+			$this->success('新增成功', url('user/showauser', ['id'=>$uid]));
 		} else {
 			// 显示客户错误信息
 			$this->error('新增失败，请检查录入信息再次尝试，或者联系管理员');

@@ -1,6 +1,8 @@
 <?php
 namespace app\TorenAdmin\controller;
+
 use think\Db;
+use think\Request;
 use think\Controller;
 use app\Common\Controller\AuthController;
 
@@ -118,9 +120,19 @@ class CorpController extends AuthController
 		}
 	}
 
+	/**
+	 * 获取所有公司
+	 * @return [type] [description]
+	 */
 	public function corplist() {
 		$corplist = Db::name('trcorp')->where('isactive', 1)->select();
 		return $corplist;
+	}
+
+	public function ajax_corplist() {
+		$text = input('param.name', '','strip_tags');
+		return json($text);
+		$corplist = Db::name('trcorp')->where('isactive', 1)->select();
 	}
 
 	/**
