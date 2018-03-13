@@ -104,9 +104,6 @@
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
 					</div>
-					<div class="time">
-						<span v-text="today"></span>
-					</div>
 				</div>
 				<div class="row" style="padding: 3rem 0">
 					{/* 页面左侧表单 */ }
@@ -165,7 +162,7 @@
 						    <label for="" class="col-sm-2 control-label"><span class="text-danger">*&nbsp;</span>上级单位</label>
 						    <div class="col-sm-10">
 						      <input type="text" class="form-control" placeholder="请从右侧选择上级单位" v-model='uppername' name='uppername' disabled>
-						      <input type="text" class="form-control" v-model='upperid' name='upperid'>
+						      <input type="text" class="form-control hidden" v-model='upperid' name='upperid'>
 						    </div>
 						  </div>
 					  	{/* 上级单位显示区域结束 */ }
@@ -179,7 +176,7 @@
 					</div>
 
 					{/* 页面右侧辅助区 */ }
-					<div class="col-md-6">
+					<div class="col-md-6" v-show='hasupper==1'>
 						<div>
 							<input type="text" class="form-control" placeholder="输入关键字以搜索单位" name='' style="width:80%;display: inline-block" v-model='keyword'>
 							<a class="btn btn-default" role="button" style="width:20%;float:right;" v-on:click='searchcorp'>搜索</a>
@@ -217,16 +214,9 @@ var vm = new Vue({
 	data: {
 		today: '',
 		user: '',
-		// corpname: '',
-		// nickname: '',
-		// address: '',
-		// corpuser: '',
-		// contact: '',
-		// other: '',
+		// ----分割线----
 		hasupper: 0,
-		// uppercorp: '',
 		uppername: '',
-		// upperid: '',
 		selected: [],
 		keyword: '',
 		corplist: [],
@@ -245,13 +235,13 @@ var vm = new Vue({
 	},
 	watch: {
 		upperid: function() {
-			for(let i in this.corplist) {
-				if (this.corplist[i].id == this.upperid) {
-					console.log(this.corplist[i].id);
-					this.uppername = this.corplist[i].corpname;
+			// ES6 语法
+			for(let val of this.corplist) {
+				if (val.id == this.upperid) {
+					this.uppername = val.corpname;
 				}
 			}
-		}
+		},
 	},
 	methods: {
 		render: function() {

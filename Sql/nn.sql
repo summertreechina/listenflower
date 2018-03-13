@@ -94,6 +94,18 @@ CREATE TABLE `nn_ask` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题表';
 
+CREATE TABLE `nn_ask` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` varchar(900) NOT NULL DEFAULT '' COMMENT '问题内容',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '问题状态，1审过，0待审，2软删除',
+  `explain` varchar(900) DEFAULT '' COMMENT '答案解读',
+  `author` varchar(30) NOT NULL DEFAULT '' COMMENT '问题提供者',
+  `update_time` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
+  `create_time` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
+  `delete_time` int(11) unsigned DEFAULT NULL COMMENT '软删除时间',
+  `operate_log_id` int(11) unsigned NOT NULL COMMENT '操作记录的id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='问题表';
 
 /* 答案表 `nn_ans` */
 DROP TABLE IF EXISTS `nn_ans`;

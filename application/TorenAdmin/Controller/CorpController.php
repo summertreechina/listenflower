@@ -37,7 +37,10 @@ class CorpController extends AuthController
 	 */
 	public function add() {
 		$data = input('param.', '','strip_tags');
-			// print_r($data);
+			// print_r($data);die;
+		if (!$data['corpname'] || !$data['address'] || !$data['corpuser']) {
+			$this->error('信息填写不完整，请检查后再次尝试');
+		}
 		$corpinfo = [
 			'corpname' => $data['corpname'],
 			'nickname' => $data['nickname'],
@@ -45,7 +48,7 @@ class CorpController extends AuthController
 			'corpuser' => $data['corpuser'],
 			'contact' => $data['contact'],
 			'other' => $data['other'],
-			'uppercorpid' => $data['uppercorp'],
+			'uppercorpid' => $data['upperid'],
 			'create_time' => time(),
 		];
 		// 检测该单位是否已经存在

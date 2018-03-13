@@ -50,6 +50,9 @@ class UserController extends AuthController
 	public function add() {
 		$data = input('param.', '','strip_tags');
 			// print_r($data);die;
+		if (!$data['name'] || !$data['umobile'] || !$data['upwd'] || !$data['urole']) {
+			$this->error('信息录入不完整，请检查');
+		}
 		$userinfo = [
 			'uname' => $data['name'],
 			'mobile' => $data['umobile'],

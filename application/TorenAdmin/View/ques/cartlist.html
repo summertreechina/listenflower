@@ -2,7 +2,7 @@
 <html>
 <head>
 
-{include file='com/meta' title="单位列表-同人消防" /}
+{include file='com/meta' title="明日试题-同人消防" /}
 
 <style>
 	[v-cloak] {
@@ -102,6 +102,13 @@
 	table i {
 		margin: 0 .3rem;
 	}
+	table img {
+		max-height: 30px;
+	}
+	table div {
+		height: 3rem;
+		overflow: hidden;
+	}
 </style>
 </head>
 <body>
@@ -113,46 +120,53 @@
 		<div class="container">
 				<div class="title-wrap">
 					<div class="title">
-						<span>单位列表-同人消防</span>
+						<span>明日试题-同人消防</span>
 					</div>
 					<div class="small-title">
 						<span>消防监控员每日培训项目</span>
 					</div>
+					<div class="time">
+						<span v-text="today"></span>
+					</div>
 				</div>
-				<div class="row" style="padding: 3rem 0">
+				<div class="row" style="padding: 1rem 0">
 					{/* 居中设计单位信息 */ }
 					<div class="col-md-12">
-						{/* 公司列表-开始 */ }
 
+						<h3>您选择的，明日要考试的试题一共有 <span class="text-danger">{$count}</span> 题。</h3>
+						{/* 试题列表-开始 */ }
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th style="width: 60px;">编号</th>
-									<th style="width: 30%;">单位名称</th>
-									<th style="width: 30%;">单位地址</th>
-									<th style="width: 20%;">联系方式</th>
-									<th>操作</th>
+									<th style="width: 70px;">选择</th>
+									<th style="width: 60%;">题目</th>
+									<th style="width: 15%;">明日试题</th>
+									<th style="width: 10%;">出题人</th>
+									<th style="width: 15%;">操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								{foreach $corplist as $vo}
+								
+								{foreach $list as $vo}
 								<tr>
 									<th scope="row">{$vo.id}</th>
-									<td><a href="{:url('corp/showacorp', ['id'=>$vo.id])}" target="_blanck">{$vo.corpname}</a></td>
-									<td>{$vo.address}</td>
-									<td>{$vo.contact}</td>
+									<td><div><a href="{:url('Ques/showone', ['id'=>$vo.id])}" target="_blanck">{$vo.content}</a></div></td>
 									<td>
-										<a href="{:url('corp/editview', ['id'=>$vo.id])}" target="_blanck"><i class="fa fa-edit"></i></a>
-										<a href="{:url('user/corpuser', ['id'=>$vo.id])}" target="_blanck"><i class="fa fa-users"></i></a>
-										<a href="{:url('corp/intrash', ['id'=>$vo.id])}"><i class="fa fa-trash"></i></a>
+										{notempty name="$vo.item"}
+											<a href="{:url('Ques/outcart', ['id'=>$vo.id])}"><i class="fa fa-shopping-cart fa-lg text-danger"></i>移出明日题库</a>
+										{/notempty}
+									</td>
+									<td>{$vo.author}</td>
+									<td>
+										<a href="{:url('Ques/addcart', ['id'=>$vo.id])}"><i class="fa fa-shopping-cart fa-lg"></i>加入明日题库</a>
 									</td>
 								</tr>
 								{/foreach}
+
 							</tbody>
 						</table>
-						{$corplist->render()}
-
-						{/* 公司列表-结束 */ }
+						{$list->render()}
+						{/* 试题列表-结束 */ }
 					</div>
 				</div>
 		</div>
