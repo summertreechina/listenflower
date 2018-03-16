@@ -1,0 +1,15 @@
+<header>
+	<div class="brand-bar" style="color:#4d3333;font-weight:800;text-shadow: 0 0 1px #4d3333;">Toren 试题后台管理页</div>
+	<div class="user-bar">
+		<template v-if="!user">
+			<a href="javascript:;" v-on:click="login()">登录</a>
+		</template>
+		<template v-else>
+			<a href="javascript:;"  v-text="user"></a>
+			<span>|</span>
+			<a href="javascript:;" v-on:click="logout()">退出</a>
+			<span>|</span>
+		</template>
+			<a href="javascript:;" v-on:click="msg()">消息通知</a>
+	</div>
+</header>

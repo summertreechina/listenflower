@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>消防监控室每日5分钟</title>
+<link rel="shortcut icon" type=image/ico href=http://download.easyicon.net/ico/1174947/48/ >
+<link href=http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/animate.css/3.5.2/animate.css rel=stylesheet>
+<link href=http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet>
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+<style>
+[v-cloak] {
+  display: none !important;
+}
+#app {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 14px;
+	color: #2c3e50;
+}
+main {
+	flex: 1;
+}
+header,
+footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 3rem;
+	padding: 0 3rem;
+}
+header {
+	box-shadow: 0 1px 8px hsla(0,0%,60%,.2);
+}
+footer {
+	box-shadow: 0 1px 2px hsla(0,0%,60%,.2);
+	background-color: #444;
+	min-height: 4rem;
+}
+header *,
+footer * {
+	padding: 0 .6rem;
+}
+.title-wrap	{
+	text-align: center;
+	margin-top: 8rem;
+}
+.title {
+	width: 360px;
+	margin: 0 auto;
+	text-transform: uppercase;
+	font-family: Politica;
+	position: relative;
+}
+.title:after {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 1px;
+	background: #e8e8e8;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	z-index: -1;
+}
+.title span {
+	background: #fff;
+	color: #000;
+	padding: 0 .6rem;
+	font-size: 3rem;
+}
+
+.time {
+	font-size: 1.8rem;
+	font-weight: 600;
+	margin: 1rem auto;
+}
+.time span:hover {
+	cursor: pointer;
+	text-shadow: 0px 0px 4px #369;
+}
+.score {
+	/*font-size: 1.2rem;*/
+	font-weight: 400;
+	margin: 1rem auto;
+	color: #ff5722;
+}
+.score span:hover {
+	cursor: pointer;
+	text-shadow: 0px 0px 4px #936;
+}
+.single-question {
+	margin: 3rem 0 8rem 0;
+	border-bottom: 1px solid #369;
+}
+.single-question img {
+	max-width: 80%;
+	max-height: 300px;
+}
+.restart {
+	margin-top: -50px;margin-bottom: 30px;padding: 1rem;background-color: #fcf8e387;
+}
+.loginInput {
+	max-width: 300px;
+	margin: 0 auto;
+	/*sweetalert*/
+}
+fieldset {
+	display: none;
+	/*sweetalert*/
+}
+#time-line {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+#time-line span {
+	width: 2.3rem;
+	height: 2.3rem;
+	background-color: rgb(235, 237, 240);
+	border: 1px solid #fff; 
+	border-radius: 50%;
+	text-align: center;
+	line-height: 2.1rem;
+	color: #fff;
+}
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+	<header>
+		<div class="brand-bar">brand</div>
+		<div class="user-bar">
+			<template v-if="!user">
+				<a href="javascript:;" v-on:click="login()">登录</a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="regist()">注册</a>
+			</template>
+			<template v-else>
+				<a href="javascript:;" v-text="user"></a>
+				<span>|</span>
+				<a href="javascript:;" v-on:click="logout()">退出</a>
+				<span>|</span>
+			</template>
+				<a href="javascript:;" v-on:click="msg()">消息通知</a>
+		</div>
+	</header>
+	<main>
+		<div class="container">
+				<div class="title-wrap">
+					<div class="title">
+						<span>消防监控室</span>
+					</div>
+					<div class="small-title">
+						<span>每日5分钟</span>
+					</div>
+					<div class="time">
+						<span v-text="today"></span>
+					</div>
+					<div class="score">
+						<template v-if="user">
+							<!-- 测试点 -->
+							<span>今日最高分:{{ maxScore }}</span>
+						</template>
+						<template v-else>
+							<span>未登录用户</span>
+						</template>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-md-6 col-md-offset-3">
+						<div class="single-question" v-for="item in questionList">
+							<div class="ask" v-html="item.content"></div>
+							<div>
+								<p><a href="javascript:;" v-if="item.showExolain" v-on:click="showExolain(item)" class="text-danger">题目分析</a></p>
+								<p><span v-if="!item.isDo" class="text-primary">请选择答案：</span></p>
+							</div>
+							<div>
+								<label class="checkbox-inline"  style="margin: 1rem 4rem 1rem 0rem" v-for="ans of item.answerList">
+									<input type="checkbox" v-bind:value="ans.content" v-bind:disabled="item.isDo" v-on:change="checked(ans)">{{ans.content}}
+								</label>
+							</div>
+							<div style="display:flex;justify-content:space-between;align-items: center;">
+								<i><small>出题人：{{item.author}}</small></i>
+								<button v-on:click="checkRight(item)" v-bind:disabled="item.isDo" class="btn" type="submit" style="text-shadow: 0px 0px 4px #369;">确认</button>
+							</div>
+						</div>
+						<div v-if="isShowScore" class="restart">
+							<p>本次得分：<span v-text="score" class="score"></span>；</p>
+							<p>本系统自动将今日最高分作为您的成绩  :）！</p>
+							<p>如果您对成绩不满意，可以选择<a class="score" v-on:click="reload()">再做一遍</a>！</p>
+							<p>如果您是未注册用户，系统无法保存 <a href="javascript:;" class="score" v-on:click="timeLine()">每日成绩</a>。</p>
+						</div>
+						<div v-if="!isShowScore" id="time-line" style="margin: 20px 0 20px 0">
+							<span>1</span>
+							<span>2</span>
+							<span>3</span>
+							<span>4</span>
+							<span>5</span>
+							<span>6</span>
+							<span>7</span>
+							<span>8</span>
+							<span>9</span>
+							<span>10</span>
+							<span>11</span>
+							<span>12</span>
+							<span>13</span>
+							<span>14</span>
+							<span>15</span>
+							<span>16</span>
+							<span>17</span>
+							<span>18</span>
+							<span>19</span>
+							<span>20</span>
+							<span>21</span>
+							<span>22</span>
+							<span>23</span>
+							<span>24</span>
+							<span>25</span>
+							<span>26</span>
+							<span>27</span>
+							<span>28</span>
+							<span>29</span>
+							<span>30</span>
+							<span>31</span>
+						</div>
+					</div>
+				</div>
+		</div>
+	</main>
+	<footer>
+		<div class="brand-bar" style="color: #999;">
+			<span>Tel:0532-55561119</span>
+			<span style="color: black;">|</span>
+			<span>Mobile:13366933112</span>
+			<span style="color: black;">|</span>
+		</div>
+		<div class="user-bar">
+			<a href="#" class="">我要出题</a>
+			<span class="">|</span>
+			<a href="#" class="">意见反馈</a>
+			<span class="">|</span>
+			<a href="#" class="">特别感谢</a>
+		</div>
+	</footer>
+</div>
+	<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+	<script src="https://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
+	<script src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+let url = "{:url('Exam/getQuestions')}"
+let checkUrl = "{:url('Index/checkIsRight')}"
+let loginUrl = "{:url('Index/login')}"
+let getUser = "{:url('Index/isLogin')}"
+let logoutUrl = "{:url('Index/logout')}"
+let saveScoreUrl = "{:url('Index/saveScore')}"
+const URL = {
+	maxScoreUrl: "{:url('Index/getMaxScore')}",
+}
+var vm = new Vue({
+	el: "#app",
+	data: {
+		questionList: [],
+		checkedAnswers: [],
+		rightItemNum: 0,
+		step: 0,
+		today: '',
+		score: 0,
+		isShowScore: false,
+		user: '',
+		userid: '',
+		mobile: '',
+		maxScore: '',
+		userinfo: [],
+	},
+	computed: {
+		totalItem: function() {
+			return this.questionList.length;
+		},
+	},
+	filters: {},
+	mounted () {
+		this.$nextTick(function(){
+			this.getUser();
+			this.render();
+		});
+	},
+	watch: {},
+	methods: {
+		render: function() {
+			this.showToday();
+			axios.get(url)
+			.then( (response) => {
+				this.questionList = response.data;
+				this.questionList.forEach((question, index)=>{
+					this.$set(question, 'isDo', false);
+					question.answerList.forEach((ans, i)=>{
+						this.$set(ans, 'checked', false);
+					});
+				});
+			})
+			.catch(function (error) {
+				alert(error);
+			});
+		},
+		checkRight: function(item) {
+			let id = item.id;
+			if (!item.isDo) {
+				if (this.checkedAnswers === undefined || this.checkedAnswers.length == 0) {
+					swal("亲，您忘记选择答案了", "😄", "warning");
+				} else {
+					axios.post(checkUrl, {
+						id : id,
+						checkedAnswers : this.checkedAnswers
+					})
+					.then((r) => {
+						if (r.data == 'right') {
+							this.$set(item, 'score', true);
+							this.$set(item, 'showExolain', false);
+							this.rightItemNum++;
+							swal("您太厉害了，这都能答对！", "👍","success")
+						}
+						if (r.data == 'mistake') {
+							this.$set(item, 'score', false);
+							this.$set(item, 'showExolain', true);
+							swal("您终于答错了！", "😏","error")
+						}
+						this.step++;
+						this.calcScore();
+						// 做完一题后将isDo置为true,不能再做
+						item.isDo = true;
+						// 将checkedAnswers中暂存的答案清空,为下一题腾出空间
+						this.checkedAnswers.length = 0;
+					})
+					.catch(function (e) {
+						console.log(e);
+					});
+				}
+			} else {
+				swal("您已经做过这道题目了", "😄", "warning");
+			}
+		},
+		checked: function(ans) {
+			ans.checked = !ans.checked;
+			let content = ans.content;
+			if (ans.checked) {
+				this.checkedAnswers.push(content);
+			} else {
+				let index = this.checkedAnswers.indexOf(content);
+				this.checkedAnswers.splice(index, 1);
+			}
+		},
+		showExolain: function(item) {
+			swal({ 
+				title: "",
+				text: item.explain, 
+				html: true 
+			});
+		},
+		showToday: function() {
+			let D = new Date();
+			let y = D.getFullYear();
+			let m = D.getMonth() + 1;
+			let d = D.getDate();
+			let w = D.getDay();
+			let arr = ['日', '一', '二', '三', '四', '五', '六'];
+			this.today = `${y}-${m}-${d}/星期${arr[w]}`;
+		},
+		showScore: function() {},
+		calcScore: function() {
+			this.score = (this.rightItemNum / this.totalItem) * 100;
+			if (this.totalItem == this.step) {
+				if (this.userid) {
+					this.submitScore();
+				}
+				setTimeout(()=>{
+					swal({ 
+					  title: "",
+					  text: `<p style="font-weight:500;font-size:1.6rem">亲，恭喜您完成了所有题目!</p><br><p>此次获得：<span style="color:#ff5722;font-weight:800;font-size:2rem">${this.score}<span>分</p>`,
+					  html: true 
+					});
+					this.isShowScore = true;
+				},2000); 
+			} else {}
+		},
+		submitScore: function() {
+			axios.post(saveScoreUrl, {
+						uid : this.userid,
+						score : this.score,
+				})
+				.then( (response)=> {
+					this.getMaxScore();
+				  console.log(response);
+				})
+				.catch( (error)=> {
+				  console.log(error);
+				  alert('通信问题，成绩未能提交，请再次尝试，如未解决请联系管理员')
+				});
+		},
+		reload: function() {
+			window.location.reload();
+			// this.render();
+		},
+		login: function() {
+			swal({
+				title: "<small>登录</small>",
+				text: `手机号码 <input type="number" name='mobile' id="mobile" placeholder="手机号码" class="loginInput">
+							密码 <input type='text' name='password' id="password" placeholder="密码" class="loginInput">`,
+				html: true,
+				type: "prompt",
+				confirmButtonText: "提交",
+				cancelButtonText: "取消",
+				showCancelButton: true,
+			},
+			()=>{
+				let mobile = document.querySelector("#mobile").value;
+				let password = document.querySelector("#password").value;
+				if (mobile=="" || password=="") {
+					alert("信息不完整！");
+				} else {
+					axios.post(loginUrl, {
+						mobile : mobile,
+						password : password,
+					}).then((r)=>{
+						this.getUser();
+					}).catch((e)=>{
+						console.log(e);
+					});
+				}
+			})
+		},
+		logout: function() {
+			axios.get(logoutUrl).then((r)=>{
+				console.log(r)
+				if (r.data) {
+					this.getUser();
+					this.render();
+				}
+			});
+		},
+		getUser: function() {
+			axios.get(getUser).then((r)=>{
+				if (r.data) {
+					this.user = r.data['uname'];
+					this.mobile = r.data['mobile'];
+					this.userid = r.data['id'];
+					this.userinfo = r.data;
+					this.getMaxScore();
+				} else {
+					this.user = null;
+					this.mobile = null;
+					this.userid = null;
+					this.userinfo.length = 0;
+				}
+			});
+		},
+		getMaxScore: function() {
+			axios.post(URL.maxScoreUrl, {
+				'uid' : this.userid,
+			})
+			.then((r)=>{
+				// console.log(r)
+				if (r) {
+					this.maxScore = r.data;
+				} else {
+					this.maxScore = 0;
+				}
+			})
+			.catch((e)=>{
+				console.log(e);
+			});
+		},
+		regist: function() {
+			// axios.get("{:url('Index/getLoginUser')}").then((r)=>{
+			// 	console.log(r.data);
+			// });
+			swal({ 
+				title: "对外注册的工作还未准备好", 
+				text: "3秒后自动关闭", 
+				type: "info",
+				timer: 3000, 
+				showConfirmButton: false
+			});
+		},
+		msg: function() {},
+		timeLine: function() {
+			
+		}
+	},
+});
+</script>
+</body>
+</html>
+
+

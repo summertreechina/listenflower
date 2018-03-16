@@ -113,10 +113,16 @@ class QuesController extends AuthController
      */
     private function emptyoldcart() {
         // 删除之前将内容存储到另一张表中
-        $oldcart = Db::name('trcart')->field('item, create_time')->whereTime('create_time', '<', 'today')->select();
-        $r = Db::name('troldcart')->insertAll($oldcart);
+        $oldcart = Db::name('trcart')
+            ->field('item, create_time')
+            ->whereTime('create_time', '<', 'today')
+            ->select();
+        $r = Db::name('troldcart')
+            ->insertAll($oldcart);
 
-        $re = Db::name('trcart')->whereTime('create_time', '<', 'today')->delete();
+        $re = Db::name('trcart')
+            ->whereTime('create_time', '<', 'today')
+            ->delete();
 
         if ($re) {
             $this->isemptyoldcart = true;
@@ -145,4 +151,11 @@ class QuesController extends AuthController
         ]);
         return $this->fetch();
     }
+
+    public function addques() {
+
+    }
+
+
+
 }
