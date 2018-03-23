@@ -135,12 +135,10 @@ fieldset {
 <body>
 <div id="app" v-cloak>
 	<header>
-		<div class="brand-bar">brand</div>
+		<div class="brand-bar">Toren 同人服务 </div>
 		<div class="user-bar">
 			<template v-if="!user">
 				<a href="javascript:;" v-on:click="login()">登录</a>
-				<span>|</span>
-				<a href="javascript:;" v-on:click="regist()">注册</a>
 			</template>
 			<template v-else>
 				<a href="javascript:;" v-text="user"></a>
@@ -166,11 +164,48 @@ fieldset {
 					<div class="score">
 						<template v-if="user">
 							<!-- 测试点 -->
-							<span>今日最高分:{{ maxScore }}</span>
+							<span >今日最高分:{{ maxScore }}</span>
 						</template>
 						<template v-else>
 							<span>未登录用户</span>
 						</template>
+						<div class="row">
+							<div class="col-xs-12 col-md-6 col-md-offset-3 hide">
+								<div id="time-line" style="margin: 20px 0 20px 0">
+									<span>1</span>
+									<span>2</span>
+									<span>3</span>
+									<span>4</span>
+									<span>5</span>
+									<span>6</span>
+									<span>7</span>
+									<span>8</span>
+									<span>9</span>
+									<span>10</span>
+									<span>11</span>
+									<span>12</span>
+									<span>13</span>
+									<span>14</span>
+									<span>15</span>
+									<span>16</span>
+									<span>17</span>
+									<span>18</span>
+									<span>19</span>
+									<span>20</span>
+									<span>21</span>
+									<span>22</span>
+									<span>23</span>
+									<span>24</span>
+									<span>25</span>
+									<span>26</span>
+									<span>27</span>
+									<span>28</span>
+									<span>29</span>
+									<span>30</span>
+									<span>31</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -197,39 +232,6 @@ fieldset {
 							<p>如果您对成绩不满意，可以选择<a class="score" v-on:click="reload()">再做一遍</a>！</p>
 							<p>如果您是未注册用户，系统无法保存 <a href="javascript:;" class="score" v-on:click="timeLine()">每日成绩</a>。</p>
 						</div>
-						<div v-if="!isShowScore" id="time-line" style="margin: 20px 0 20px 0">
-							<span>1</span>
-							<span>2</span>
-							<span>3</span>
-							<span>4</span>
-							<span>5</span>
-							<span>6</span>
-							<span>7</span>
-							<span>8</span>
-							<span>9</span>
-							<span>10</span>
-							<span>11</span>
-							<span>12</span>
-							<span>13</span>
-							<span>14</span>
-							<span>15</span>
-							<span>16</span>
-							<span>17</span>
-							<span>18</span>
-							<span>19</span>
-							<span>20</span>
-							<span>21</span>
-							<span>22</span>
-							<span>23</span>
-							<span>24</span>
-							<span>25</span>
-							<span>26</span>
-							<span>27</span>
-							<span>28</span>
-							<span>29</span>
-							<span>30</span>
-							<span>31</span>
-						</div>
 					</div>
 				</div>
 		</div>
@@ -242,11 +244,9 @@ fieldset {
 			<span style="color: black;">|</span>
 		</div>
 		<div class="user-bar">
-			<a href="#" class="">我要出题</a>
+			<a href="{:url('Other/upload')}" class="" target="_blanck">我要出题</a>
 			<span class="">|</span>
-			<a href="#" class="">意见反馈</a>
-			<span class="">|</span>
-			<a href="#" class="">特别感谢</a>
+			<a href="{:url('Other/tellme')}" class="" target="_blanck">意见反馈</a>
 		</div>
 	</footer>
 </div>
@@ -298,15 +298,17 @@ var vm = new Vue({
 			axios.get(url)
 			.then( (response) => {
 				this.questionList = response.data;
-				this.questionList.forEach((question, index)=>{
-					this.$set(question, 'isDo', false);
-					question.answerList.forEach((ans, i)=>{
-						this.$set(ans, 'checked', false);
+				if (this.questionList instanceof Array) {
+					this.questionList.forEach((question, index)=>{
+						this.$set(question, 'isDo', false);
+						question.answerList.forEach((ans, i)=>{
+							this.$set(ans, 'checked', false);
+						});
 					});
-				});
+				}
 			})
 			.catch(function (error) {
-				alert(error);
+				console.log(error);
 			});
 		},
 		checkRight: function(item) {
@@ -474,18 +476,6 @@ var vm = new Vue({
 			})
 			.catch((e)=>{
 				console.log(e);
-			});
-		},
-		regist: function() {
-			// axios.get("{:url('Index/getLoginUser')}").then((r)=>{
-			// 	console.log(r.data);
-			// });
-			swal({ 
-				title: "对外注册的工作还未准备好", 
-				text: "3秒后自动关闭", 
-				type: "info",
-				timer: 3000, 
-				showConfirmButton: false
 			});
 		},
 		msg: function() {},

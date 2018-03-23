@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+{include file='com/meta' title="意见反馈-同人消防" /}
+
+<style>
+	[v-cloak] {
+	  display: none !important;
+	}
+	#app {
+		display: flex;
+		min-height: 100vh;
+		flex-direction: column;
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-size: 14px;
+		color: #2c3e50;
+	}
+	main {
+		flex: 1;
+		padding-bottom: 3rem;
+	}
+	header,
+	footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 3rem;
+		padding: 0 3rem;
+	}
+	header {
+		box-shadow: 0 1px 8px hsla(0,0%,60%,.2);
+	}
+	footer {
+		box-shadow: 0 1px 2px hsla(0,0%,60%,.2);
+		background-color: #444;
+		min-height: 4rem;
+	}
+	header *,
+	footer * {
+		padding: 0 .6rem;
+	}
+	.title-wrap	{
+		text-align: center;
+		margin-top: 4rem;
+	}
+	.title {
+		width: 600px;
+		margin: 0 auto;
+		text-transform: uppercase;
+		font-family: Politica;
+		position: relative;
+	}
+	.title:after {
+		content: "";
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: #e8e8e8;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		z-index: -1;
+	}
+	.title span {
+		background: #fff;
+		color: #000;
+		padding: 0 .6rem;
+		font-size: 3rem;
+	}
+	.time {
+		font-size: 1.8rem;
+		font-weight: 600;
+		margin: 1rem auto;
+	}
+	.time span:hover {
+		cursor: pointer;
+		text-shadow: 0px 0px 4px #369;
+	}
+	.loginInput {
+		max-width: 300px;
+		margin: 0 auto;
+		/*sweetalert*/
+	}
+	fieldset {
+		display: none;
+		/*sweetalert*/
+	}
+	/* 本页面独有样式 */
+
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+	{include file='com/header' /}
+
+	<main>
+		<div class="container">
+
+				<div class="row" style="padding: 10rem 0">
+					{/*  */ }
+					<div class="col-md-12">
+						{/* 提交意见表单-开始 */ }
+
+						<form method="post" action="{:url('Other/saveadvice')}">
+							<div class="form-group">
+								<label>有什么意见和好的想法就在这里畅所欲言吧</label>
+								<textarea class="form-control" rows="8" name="advice"></textarea>
+							</div>
+							<div class="form-group">
+								<label>如果你愿意，可以在此留下联系方式，方面我们后续交流</label>
+								<input type="text" class="form-control" name="contact" placeholder="电子邮箱、手机。已注册会员不需要填写。">
+								<input type="number" class="form-control hide" name="userid" v-bind:value="userid">
+							</div>
+							<button type="submit" class="btn btn-default">提交意见</button>
+						</form>
+
+						{/* 提交意见表单-结束 */ }
+					</div>
+				</div>
+		</div>
+	</main>
+
+	{include file="com/footer" /}
+	
+</div>
+
+	{include file='com/script' /}
+	
+<script>
+const URL = {
+	loginUrl: `{:url('Toren/Index/login')}`,
+	getUser: `{:url('Toren/Index/isLogin')}`,
+	logoutUrl: `{:url('Toren/Index/logout')}`,
+}
+var vm = new Vue({
+	el: "#app",
+	data: {
+		today: '',
+		user: '',
+		userid: '',
+	},
+	computed: {
+	},
+	filters: {},
+	mounted () {
+		this.$nextTick(function(){
+			this.getUser();
+			this.showToday();
+		});
+	},
+	watch: {
+	},
+	methods: {
+		render: function() {
+		},
+		showToday: function() {
+			let D = new Date();
+			let y = D.getFullYear();
+			let m = D.getMonth() + 1;
+			let d = D.getDate();
+			let w = D.getDay();
+			let arr = ['日', '一', '二', '三', '四', '五', '六'];
+			this.today = `${y}-${m}-${d} / 星期${arr[w]}`;
+		},
+		login: function() {
+			swal({
+				title: "<small>登录</small>",
+				text: `手机号码 <input type="number" name='mobile' id="mobile" placeholder="手机号码" class="loginInput">
+							密码 <input type='text' name='password' id="password" placeholder="密码" class="loginInput">`,
+				html: true,
+				type: "prompt",
+				confirmButtonText: "提交",
+				cancelButtonText: "取消",
+				showCancelButton: true,
+			},
+			()=>{
+				let mobile = document.querySelector("#mobile").value;
+				let password = document.querySelector("#password").value;
+				if (mobile=="" || password=="") {
+					alert("信息不完整！");
+				} else {
+					axios.post(URL.loginUrl, {
+						mobile : mobile,
+						password : password,
+					}).then((r)=>{
+						this.getUser();
+					}).catch((e)=>{
+						console.log(e);
+					});
+				}
+			})
+		},
+		logout: function() {
+			axios.get(URL.logoutUrl).then((r)=>{
+				console.log(r)
+				if (r.data) {
+					this.getUser();
+					this.render();
+				}
+			});
+		},
+		getUser: function() {
+			axios.get(URL.getUser).then((r)=>{
+				if (r.data) {
+					this.user = r.data['uname'];
+					this.mobile = r.data['mobile'];
+					this.userid = r.data['id'];
+					this.userinfo = r.data;
+				} else {
+					this.user = null;
+					this.mobile = null;
+					this.userid = null;
+					this.userinfo = null;
+				}
+			});
+		},
+		msg: function() {},
+	},
+});
+</script>
+</body>
+</html>
+
+

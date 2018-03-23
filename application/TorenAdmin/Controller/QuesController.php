@@ -3,9 +3,7 @@ namespace app\TorenAdmin\controller;
 
 use think\Db;
 use think\Controller;
-// use app\Common\Model\AskModel;
-// use app\Common\Model\AnsModel;
-// use app\Common\Model\TRTomorrowModel;
+use app\Common\Model\AnsModel;
 use app\Common\Controller\AuthController;
 
 class QuesController extends AuthController
@@ -133,7 +131,7 @@ class QuesController extends AuthController
 
 
     /**
-     * 明日题库图视
+     * 后台明日题库图视
      * @return [type] [description]
      */
     Public function cartlist() {
@@ -152,8 +150,52 @@ class QuesController extends AuthController
         return $this->fetch();
     }
 
-    public function addques() {
+    /**
+     * 后台录入试题视图
+     * @return [type] [description]
+     */
+    public function add() {
+        return $this->fetch();
+    }
 
+    /**
+     * 后台录入试题操作
+     * @return [type] [description]
+     */
+    public function addask() {
+        $rawdata = input('post.');
+
+        // TP报错未定义索引'askContent' 莫名其妙 但不影响程序继续执行
+        $data = [
+            'content' => $rawdata['askContent']['cont'],
+            'status' => 1,
+            'explain' => $rawdata['explain'],
+            'author' => $rawdata['author'],
+            'create_time' => time(),
+        ];
+
+        $isExist = DB::name('ask')->where('content', $data['content'])->find();
+
+        if ($isExist) {
+            return json(['status' => '0', 'info' => '题目已经提交过']);
+        } else {
+            $id = Db::name('ask')->insertGetId($data);
+        }
+
+        if ($id) {
+            foreach ($obj['ansList'] as $v) {
+                $AnsModel = new AnsModel();
+                $isRight = $v['isRight'] || 0;
+                $content = [
+                    'content' => $v['ans'],
+                    'ask_id' => $id,
+                    'isRight' => $isRight
+                ];
+                $r = $AnsModel->addAnswers($content);
+            }
+        }
+
+        return json(['status' => '1', 'info' => '提交成功']);
     }
 
 

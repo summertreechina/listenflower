@@ -42,6 +42,76 @@ class ExamController extends Controller
         return json($asklist);
     }
 
+    /**
+     * 保存某位的用户的分数
+     * @return [type] [description]
+     */
+    public function saveScore() {
+        $uid = input('post.uid/d');
+        $score = input('post.score/d');
+        $data = array(
+            'user_id' => $uid,
+            'score' => $score,
+            'create_time' => time(),
+        );
+        $r = Db::name('truserscore')->insert($data);
+        return json($r);
+    }
+
+    /**
+     * 获得今日某位用户的最高分
+     * @return [type] [description]
+     */
+    public function getMaxScore() {
+        $uid = input('post.uid/d');
+        $r = Db::name('truserscore')
+                ->where('uid', $uid)
+                ->whereTime('create_time', 'today')
+                ->max('score');
+
+        $this->update_max_score($uid, $r);
+
+        return json($r);
+    }
+
+    /**
+     * 优化存储最高分存储
+     * @param  [int] $uid   [用户ID]
+     * @param  [int] $score [最高分]
+     * @return [type]        [description]
+     */
+    private function update_max_score($uid, $score) {
+        $today_score = Db::name('trmaxscore')
+            ->where('uid', $uid)
+            ->whereTime('create_time', 'today')
+            ->select();
+        if (!$today_score) {
+            $data = [
+                'user_id' => $uid,
+                'maxscore' => $score,
+                'create_time' => time(),
+            ];
+            $r = Db::name('trmaxscore')->insert($data);
+            if (!$r) {
+                exit('maxscore存入发生错误');
+            }
+        } else {
+            $r = Db::name('trmaxscore')
+                ->where('id', $today_score['id'])
+                ->update([
+                    'maxscore' => $score,
+                    'create_time' => time(),
+                ]);
+
+            if (!$r) {
+                exit('maxscore更新时发生错误');
+            }
+        }
+    }
+
+    
+
+
 
 
 }
